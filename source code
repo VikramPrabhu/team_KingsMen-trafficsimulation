@@ -155,3 +155,169 @@ to draw-margins
                              (pycor >= -2 ) and (pycor <= 2) and (pxcor = 0) ]
          [set pcolor white ]
     ]
+
+;;------------------------------------------------------------------------------------------------------------------------------------------;;
+ ;;------------------------------------To assign patches to their respective lanes----------------------------------------------------------------;;
+
+ set glane0 patches with [ pxcor < -2 and pycor = 2]
+
+ set glane1 patches with [ pxcor < -2 and pycor = -2]
+
+ set glane2 patches with [ pxcor > 2 and pycor = 2]
+
+ set glane3 patches with [ pxcor > 2 and pycor = -2]
+
+ set glane4 patches with [ pxcor = 2 and pycor > 2]
+
+ set glane5 patches with [ pxcor = -2 and pycor > 2]
+
+ set glane6 patches with [ pxcor = 2 and pycor < -2]
+
+ set glane7 patches with [ pxcor = -2 and pycor < -2]
+
+
+ask patches with [ pxcor = 0 and pycor = 0 ] [ set pcolor black ]
+end
+;;-------------------------------------------------------------------------------------------------------------------------------------------------------------------------;;
+
+;;-----------------------------------To initialize cars and set their parameters-------------------------------------------------------------------------------------------;;
+
+to setup-cars
+  create-turtles 30
+  [
+      set size 1
+     set color blue
+     set speed 0.2 + random-float 1.1
+     set max-speed 1.2
+     set min-speed 0.3
+     set deceleration 0.05
+     set acceleration 0.0035
+      set lane (random 8)
+
+      if ( lane = 0 )
+       [
+         set xcor random min-pxcor
+         set ycor 2
+       ]
+
+      if ( lane = 1)
+       [
+         set xcor random min-pxcor
+         set ycor -2
+        ]
+
+       if ( lane = 2 )
+       [
+         set xcor random max-pxcor
+         set ycor 2
+       ]
+
+       if ( lane = 3 )
+       [
+         set xcor random max-pxcor
+         set ycor -2
+         set slane 3
+        ]
+
+       if ( lane = 4 )
+       [
+          set xcor 2
+          set ycor random max-pycor
+       ]
+
+       if ( lane = 5 )
+        [
+          set xcor -2
+          set ycor random max-pycor
+        ]
+
+        if ( lane = 6 )
+        [
+          set xcor 2
+          set ycor random min-pycor
+        ]
+
+       if ( lane = 7 )
+        [
+          set xcor -2
+          set ycor random min-pycor
+        ]
+
+        ;;---------------------------------if not on correct lanes-------------------------------------------------------------;;
+
+          if ( lane = 0 ) or ( lane = 2 )
+         [
+           if ( ycor > 2 )
+            [
+
+              die
+            ]
+         ]
+
+         if ( lane = 1 ) or ( lane = 3 )
+         [
+           if ( ycor < -2 )
+            [
+
+              die
+            ]
+         ]
+
+         if ( lane = 4 ) or ( lane = 6 )
+         [
+           if ( xcor > 2 )
+            [
+
+              die
+            ]
+         ]
+
+         if ( lane = 5 ) or ( lane = 7 )
+          [
+             if ( xcor < -2 )
+              [
+
+                die
+              ]
+          ]
+  ;;-----------------setting headings to the cars --------------------------------------------------------------------------------------;;
+
+
+       if ( lane = 0 ) or ( lane = 2 )
+        [ set heading 90 ]
+
+       if ( lane = 3)
+       [ set heading 270 ]
+
+       if (lane = 1)
+       [ set heading 270 ]
+
+       ;if ( lane = 3 ) or ( lane = 1 )
+        ;[ set heading 270 ]
+
+       if ( lane = 5 ) or ( lane = 7 )
+
+        [ set heading 0 ]
+
+
+       if ( lane = 6 ) or ( lane = 4 )
+        [ set heading 180 ]
+
+
+        separate-cars ;;to prevent more than one turtle on the same patch
+        cars-only-in-lanes ;; cars should not be present beyond the traffic lights when the simulation starts
+      ]
+end
+
+;;---------------------------------------------------------------------------------------------------------------------------------------------------------------------------;;
+;;------------------------------to separate turtles which are on same patch ------------------------------------------------------------------------------------------------;;
+
+
+to separate-cars
+
+      if any? other turtles-here
+       [
+         fd 1
+         separate-cars
+       ]
+end
