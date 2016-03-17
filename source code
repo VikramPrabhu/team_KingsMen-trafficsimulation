@@ -1,4 +1,157 @@
 ;source code
 ;Vijay's contribution
-;Vikram's contribution
-;compare with master branch
+
+globals
+[
+  tempturtle
+  templane
+  new-counter
+  glane0
+  glane1
+  glane2
+  glane3
+  glane4
+  glane5
+  glane6
+  glane7
+  intersections    ;;;;co-ordinates where all the lanes meet
+  North-west       ;;;; patch at (-2,2)
+  North-east       ;;;; patch at (2,2)
+  South-west       ;;;; patch at (-2,-2)
+  South-east       ;;;; patch at (2,-2)
+  counter
+]
+
+patches-own
+[
+  plane0?
+  plane1?
+  plane2?
+  plane3?
+  plane4?
+  plane5?
+  plane6?
+  plane7?
+  intersection?
+]
+
+
+breed[cars car]
+breed[omnies omni]
+
+
+turtles-own
+[
+  speed         ;;;; speed of each car
+  max-speed     ;;;; maximum speed of the car
+  min-speed     ;;;; minimum speed of the car
+  lane          ;;;; randomly deciding on to which lane car has to be placed
+  actual-lane   ;;;; depending upon the lane assigned, randomly assigning x-cor or y-cor
+  change-lane   ;;;; new lane into which each car has to be changed
+  front-car     ;;;; if there is any car in the front
+  acceleration  ;;;; tells how much a car should accelerate
+  deceleration  ;;;; tells how much a car should decelerate
+
+  slane
+]
+
+
+to setup
+
+  clear-all
+   ask patches
+  [
+    set intersection? false
+    set plane0? false
+    set plane1? false
+    set plane2? false
+    set plane3? false
+    set plane4? false
+    set plane5? false
+    set plane6? false
+    set plane7? false
+  ]
+  set new-counter 0
+  ;set-default-shape  turtles "car"
+  draw-margins
+  set-intersections
+ ; show-count-of-patches
+  setup-cars
+  set North-west "green"
+  set counter 0
+  change-green-light-NW
+  reset-ticks
+  ;show count  patches with glane0
+end
+
+to set-intersections
+  set intersections patches with [ ( pxcor >= -2 and pxcor <= 2 and pycor = 2 ) or
+                                   ( pxcor = -2  and pycor >= -2 and pycor <= 2 ) or
+                                   ( pxcor = 2   and pycor >= -2 and pycor <= 2 ) or
+                                   (pxcor >= -2  and pxcor <= 2 and pycor = -2 )
+  ]
+
+  ask intersections [ set intersection? true ]
+end
+;;-------------------------------To draw margins in the world--------------------------------------------------------------------------------------;;
+to draw-margins
+  let x-cor max-pxcor mod 2
+  let y-cor max-pycor mod 2
+
+    ;---------to get white and red margins if the max-pxcor and max-pycor are even numbers--------------------------------------------------;;
+
+    if ( max-pxcor mod 2 = 0) and (max-pycor mod 2 = 0 )
+    [
+      ask patches with [ (pxcor >= x-cor - 2)  and (pxcor <= x-cor + 2) ]
+      [set pcolor white ]
+
+    ;;;;To get the green grass effect alongside the roads
+      ask patches with [ (pxcor < x-cor - 2 ) or ( pxcor > x-cor + 2 ) ]
+      [set pcolor scale-color green ((random 1000) + 8000) 10 15000 ]
+
+
+   ;;;;To get White margins along the Y-axis
+      ask patches with [ (pycor >= y-cor - 2) and (pycor <= y-cor + 2) ]
+      [set pcolor white ]
+
+
+     ;;;;To get the effect of two lanes on a single road
+      ask patches with [ (pxcor mod 2 = 0) and (pycor = 0) and (pxcor != 2) and (pxcor != -2) ]
+       [ set pcolor black ]
+      ask patches with [ (pycor mod 2 = 0) and (pxcor = 0) ]
+        [set pcolor black ]
+
+       ;;;;;;To delete the red patches and make them white at the intersection of the two roads
+        ask patches with [ (pxcor >= -2 ) and (pxcor <= 2 ) and ( pycor = 0) or
+                              (pycor >= -2 ) and (pycor <= 2) and (pxcor = 0) ]
+         [set pcolor white ]
+    ]
+
+
+   ;;---------to get white margins and red margins and if max-pxcor and max-pycor are odd numbers--------------------------------------------;;
+   if ( max-pxcor mod 2 = 1 ) and ( max-pycor mod 2 = 1 )
+   [
+       ask patches with [ (pxcor >= x-cor + -3)  and (pxcor <= x-cor + 1) ]
+       [set pcolor white ]
+
+    ;;;;To get the green grass effect alongside the roads
+       ask patches with [ (pxcor < x-cor + -3 ) or ( pxcor >= x-cor + 2 ) ]
+       [set pcolor scale-color green ((random 1000) + 8000) 10 15000 ]
+
+
+   ;;;;To get White margins along the Y-axis
+       ask patches with [ (pycor >= y-cor + -3) and (pycor <= y-cor + 1) ]
+       [set pcolor white ]
+
+
+     ;;;;To get the effect of two lanes on a single road
+       ask patches with [ (pxcor mod 2 = 0) and (pycor = 0) and (pxcor != 2) and ( pxcor != -2)]
+       [ set pcolor black ]
+       ask patches with [ (pycor mod 2 = 0) and (pxcor = 0) ]
+       [set pcolor black ]
+
+       ;;;;;;To delete the red patches and make them white at the intersection of the two roads
+        ask patches with [ (pxcor >= -2 ) and (pxcor <= 2 ) and ( pycor = 0) or
+                             (pycor >= -2 ) and (pycor <= 2) and (pxcor = 0) ]
+         [set pcolor white ]
+    ]
