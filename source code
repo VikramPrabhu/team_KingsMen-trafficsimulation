@@ -322,3 +322,294 @@ to separate-cars
          separate-cars
        ]
 end
+
+;bhabishya's contribution
+;;-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------;;
+
+;;-------------------------------Procedure to prevent cars beyond traffic lights when simulation starts------------------------------------------------------------------------;;
+
+to cars-only-in-lanes
+
+if ( lane = 0 ) or ( lane = 1 )
+
+[
+
+if ( xcor >= -2 )
+
+[
+
+let temp-xcor random min-pxcor
+
+ifelse ( temp-xcor < -2 )
+
+[ set xcor temp-xcor ]
+
+[ cars-only-in-lanes ]
+
+]
+
+]
+
+if ( lane = 2 ) or ( lane = 3 )
+
+[
+
+if ( xcor <= 2 )
+
+[
+
+let temp-xcor random max-pxcor
+
+ifelse ( temp-xcor > 2 )
+
+[ set xcor temp-xcor ]
+
+[ cars-only-in-lanes ]
+
+]
+
+]
+
+if ( lane = 4 ) or ( lane = 5 )
+
+[
+
+if ( ycor <= 2 )
+
+[
+
+let temp-ycor random max-pycor
+
+ifelse ( temp-ycor > 2 )
+
+[ set ycor temp-ycor ]
+
+[ cars-only-in-lanes ]
+
+]
+
+]
+
+if ( lane = 6 ) or ( lane = 7 )
+
+[
+
+if ( ycor >= -2 )
+
+[
+
+let temp-ycor random min-pycor
+
+ifelse ( temp-ycor < -2 )
+
+[ set ycor temp-ycor ]
+
+[ cars-only-in-lanes ]
+
+]
+
+]
+
+end
+
+;;---------------------------------------------------------------------------------------------------------------------------------------------------------------------------;;
+
+;;------------------------------ To let cars move along the lanes -----------------------------------------------------------------------------------------------------------;;
+
+to go
+
+move
+
+if ( new-counter = 1 ) [ new-turtles
+
+set new-counter 0 ]
+
+set counter counter + 1
+
+if counter mod 25 = 0
+
+[
+
+change-globals-red
+
+]
+
+tick
+
+end
+
+;;-----------------------------------------------------------------------------------------------------------------------------------------------;;
+
+to accelerate-the-car
+
+set speed speed + acceleration
+
+end
+
+to decelerate-the-car
+
+set speed [ speed ] of front-car - deceleration
+
+end
+
+;;--------------------------------procedure to make cars move-------------------------------------------------------------------------------------;;
+
+to move
+
+ifelse ( North-west = "green" )
+
+[ ask turtles
+
+[
+
+if ( lane = 0 or lane = 2 or lane = 5 or lane = 6 or lane = 1)
+
+[
+
+move-cars
+
+]
+
+]
+
+]
+
+[
+
+ask turtles
+
+[
+
+if ( lane = 4 and lane = 7 and lane = 3)
+
+[
+
+set speed 0
+
+]
+
+]
+
+]
+
+;;---------------------------------------------------------------------;;
+
+ifelse ( North-east = "green" )
+
+[
+
+ask turtles
+
+[
+
+if ( lane = 4 or lane = 6 or lane = 2 or lane = 5)
+
+[
+
+move-cars
+
+]
+
+]
+
+]
+
+[
+
+ask turtles
+
+[
+
+if (lane = 0 and lane = 7 and lane = 3 )
+
+[
+
+set speed 0
+
+]
+
+]
+
+]
+
+;;-------------------------------------------------------------------------;;
+
+ifelse ( South-east = "green" )
+
+[
+
+ask turtles
+
+[
+
+if ( lane = 3 or lane = 1 or lane = 2 or lane = 5 or lane = 6)
+
+[
+
+move-cars
+
+]
+
+]
+
+]
+
+[
+
+ask turtles
+
+[
+
+if ( lane = 4 and lane = 7 and lane = 0 )
+
+[
+
+set speed 0
+
+]
+
+]
+
+]
+
+;;--------------------------------------------------------------------------;;
+
+ifelse ( South-west = "green" )
+
+[
+
+ask turtles
+
+[
+
+if ( lane = 7 or lane = 5 or lane = 2 or lane = 6 or lane = 1)
+
+[
+
+move-cars
+
+]
+
+]
+
+]
+
+[
+
+ask turtles
+
+[
+
+if ( lane = 4 and lane = 3 and lane = 0 )
+
+[
+
+set speed 0
+
+]
+
+]
+
+]
+
+end
