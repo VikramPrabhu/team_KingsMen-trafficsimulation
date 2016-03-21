@@ -721,6 +721,66 @@ to forward-cars-as-per-speed
          ;separate-cars
 end
 
+;;-----------------------------------------------------------------------------------------------------;;
+
+to change-green-light-NW
+
+      if ( North-west = "green" )
+       [
+         ask patch -3 2   [ set pcolor green ]
+         ask patch  2 3   [ set pcolor red ]
+         ask patch  3 -2  [ set pcolor red ]
+         ask patch -2 -3  [set pcolor red ]
+       ]
+
+end
+
+to change-green-light-NE
+
+       if ( North-east = "green" )
+       [
+         ask patch -2 2   [ set pcolor white ]
+         ask patch  3 2   [ set pcolor white ]
+         ask patch 2 3    [ set pcolor green ]
+         ask patch  2 -3  [ set pcolor white ]
+         ask patch -2 -3  [set pcolor red ]
+         ask patch -3 -2   [ set pcolor white ]
+         ask patch 3 -2    [ set pcolor red ]
+         ask patch -3 2    [set pcolor red ]
+       ]
+
+end
+
+to change-green-light-SE
+       if ( South-east = "green" )
+       [
+         ask patch -3 2   [ set pcolor red ]
+         ask patch -3 -2   [ set pcolor white ]
+         ask patch 3 2    [ set pcolor white ]
+         ask patch  2 3   [ set pcolor red ]
+         ask patch  3 -2  [ set pcolor green ]
+         ask patch -2 -3  [ set pcolor red ]
+         ask patch 2 -3   [ set pcolor white ]
+
+       ]
+
+end
+
+to change-green-light-SW
+       if ( South-west = "green" )
+       [
+         ask patch -3 2   [ set pcolor red ]
+         ask patch  2 3   [ set pcolor red ]
+         ;ask patch  2 -2  [ set pcolor red ]
+         ask patch -2 -3  [set pcolor  green ]
+         ask patch 3 2    [ set pcolor white ]
+         ask patch -3 2   [ set pcolor red ]
+         ask patch 3 -2   [ set pcolor red ]
+       ]
+
+end
+
+
 to changing-lanes
 
   if ( lane = 0 )
@@ -851,4 +911,73 @@ to assign-correct-coordinates
           set xcor -2
         ]
   ]
+end
+
+
+to separate-cars2
+
+  if ( lane = 0)
+  [
+    if ( xcor >= min-pxcor and ycor > 0 or ycor <= 2 )
+    [
+
+      separate-cars
+      stop-at-the-red-light
+    ]
+  ]
+
+  if ( lane = 4 )
+  [
+    if ( ycor <= max-pycor and xcor > 0 and xcor <= 2 )
+    [
+      separate-cars
+      stop-at-the-red-light
+    ]
+  ]
+
+  if ( lane = 3 )
+  [
+    if ( xcor <= max-pxcor and ycor >= -2 and ycor < 0)
+    [
+      separate-cars
+      stop-at-the-red-light
+    ]
+  ]
+
+  if ( lane = 7 )
+  [
+    if( xcor < 0 and xcor >= -2 and ycor >= min-pycor)
+    [
+      separate-cars
+      stop-at-the-red-light
+    ]
+  ]
+end
+
+to stop-at-the-red-light
+  let t-ahead one-of turtles-on patch-ahead 1
+  if ( t-ahead = nobody and [pcolor] of patch-ahead 1 != red )
+  [
+    fd 1
+    slow-cars-at-the-red-light
+    if ( (tempcounter mod 5) = 0 )
+    [
+      stop-at-the-red-light
+    ]
+  ]
+
+end
+
+to slow-cars-at-the-red-light
+  set tempcounter tempcounter + 1
+end
+
+to periodic-change-of-lanes-in-vehicles
+   if ( ( ticks mod 300) = 0 )
+   [
+     ask turtles
+     [
+       set change-lane random 3
+     ]
+   ]
 end
