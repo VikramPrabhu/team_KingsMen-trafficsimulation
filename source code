@@ -552,3 +552,96 @@ move-cars
 
 
 end
+
+;;-------------------------------------------moving of cars------------------------------------------------------------------------------------------------;;
+
+to move-cars
+
+  if ( lane = 2 )
+  [
+    if ([plane0?] of patch-here )
+    [
+      set lane 0
+    ]
+  ]
+  if ( lane = 0 )
+  [
+    if ([plane2?] of patch-here )
+    [
+      set lane 2
+    ]
+  ]
+
+  if ( lane = 4 )
+  [
+    if ( [plane6?] of patch-here )
+    [
+      set lane 6
+    ]
+  ]
+  if ( lane = 6 )
+  [
+    if ([plane4?] of patch-here)
+    [
+      set lane 4
+    ]
+  ]
+
+  if ( lane = 7 )
+  [
+    if ([plane5?] of patch-here)
+    [
+      set lane 5
+    ]
+  ]
+  if ( lane = 5 )
+  [
+    if ([plane7?] of patch-here)
+    [
+      set lane 7
+    ]
+  ]
+
+  if ( lane = 3 )
+  [
+    if ([plane1?] of patch-here)
+    [
+      set lane 1
+    ]
+  ]
+  if ( lane = 1 )
+  [
+    if ( [plane3?] of patch-here)
+    [
+      set lane 3
+    ]
+  ]
+
+  ;user-message ( word" The color of the patch is" [pcolor] of patches with [pxcor = 2 and pycor = 3 ] )
+ ; if ( pxcor = max-pxcor or pycor = max-pycor or pxcor = min-pxcor or pycor = min-pycor
+  ;       or pxcor = max-pxcor - 1 or pycor = max-pycor - 1 or pxcor = min-pxcor + 1 or pycor = min-pycor + 1 )
+  ;[
+   ; if ( lane = 2 ) [ set lane 0 ]
+    ;if ( lane = 6 ) [ set lane 4 ]
+    ;if ( lane = 1 ) [ set lane 3 ]
+    ;if ( lane = 5 ) [ set lane 7 ]
+  ;]
+
+    forward-cars-as-per-speed
+  end
+
+to forward-cars-as-per-speed
+
+           set front-car one-of turtles-on patch-ahead 1
+           ifelse ( front-car = nobody )
+           [ accelerate-the-car ]
+           [ decelerate-the-car ]
+
+
+          if  ( speed < min-speed ) [ set speed min-speed + 1 ]
+          if  ( speed > max-speed ) [ set speed max-speed  ]
+
+         fd speed
+         changing-lanes
+         ;separate-cars
+end
