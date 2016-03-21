@@ -507,6 +507,12 @@ move-cars
 
 ]
 
+        if ( lane = 4 or lane = 7 or lane = 3 )
+        [
+         
+          separate-cars2
+        ]
+
 ]
 
 ]
@@ -548,6 +554,12 @@ move-cars
 
 ]
 
+       if ( lane = 0 or lane = 7 or lane = 3 )
+       [
+         separate-cars2
+       ]
+
+
 ]
 
 ]
@@ -587,6 +599,11 @@ if ( lane = 3 or lane = 1 or lane = 2 or lane = 5 or lane = 6)
 move-cars
 
 ]
+       if ( lane = 0 or lane = 4 or lane = 7 )
+       [
+         separate-cars2
+       ]
+
 
 ]
 
@@ -628,6 +645,12 @@ if ( lane = 7 or lane = 5 or lane = 2 or lane = 6 or lane = 1)
 move-cars
 
 ]
+
+       if ( lane = 0 or lane = 3 or lane = 4 )
+       [
+         separate-cars2
+       ]
+
 
 ]
 
