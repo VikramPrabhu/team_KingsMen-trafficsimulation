@@ -434,13 +434,8 @@ end
 ;;------------------------------ To let cars move along the lanes -----------------------------------------------------------------------------------------------------------;;
 
 to go
-
+periodic-change-of-lanes-in-vehicles
 move
-
-if ( new-counter = 1 ) [ new-turtles
-
-set new-counter 0 ]
-
 set counter counter + 1
 
 if counter mod 25 = 0
