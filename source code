@@ -88,7 +88,10 @@ to set-intersections
   set intersections patches with [ ( pxcor >= -2 and pxcor <= 2 and pycor = 2 ) or
                                    ( pxcor = -2  and pycor >= -2 and pycor <= 2 ) or
                                    ( pxcor = 2   and pycor >= -2 and pycor <= 2 ) or
-                                   (pxcor >= -2  and pxcor <= 2 and pycor = -2 )
+                                   (pxcor >= -2  and pxcor <= 2 and pycor = -2 ) or
+                                   (pxcor >= -2 and pxcor <= 2 and pycor = 1 ) or
+                                    (pxcor >= -2 and pxcor <= 2 and pycor = 0 ) or
+                                    (pxcor >= -2 and pxcor <= 2 and pycor = -1 )
   ]
 
   ask intersections [ set intersection? true ]
@@ -175,6 +178,23 @@ to draw-margins
  set glane6 patches with [ pxcor = 2 and pycor < -2]
 
  set glane7 patches with [ pxcor = -2 and pycor < -2]
+ 
+ 
+ ask glane0 [ set plane0? true]
+
+ask glane1 [ set plane1? true ]
+
+ask glane2 [ set plane2? true ]
+
+ask glane3 [ set plane3? true ]
+
+ask glane4 [ set plane4? true ]
+
+ask glane5 [ set plane5? true]
+
+ask glane6 [ set plane6? true ]
+
+ask glane7 [ set plane7? true]
 
 
 ask patches with [ pxcor = 0 and pycor = 0 ] [ set pcolor black ]
