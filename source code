@@ -456,7 +456,7 @@ end
 
 to move
 
-ifelse ( North-west = "green" )
+if ( North-west = "green" )
 
 [ ask turtles
 
@@ -474,27 +474,11 @@ move-cars
 
 ]
 
-[
 
-ask turtles
-
-[
-
-if ( lane = 4 and lane = 7 and lane = 3)
-
-[
-
-set speed 0
-
-]
-
-]
-
-]
 
 ;;---------------------------------------------------------------------;;
 
-ifelse ( North-east = "green" )
+if ( North-east = "green" )
 
 [
 
@@ -514,27 +498,13 @@ move-cars
 
 ]
 
-[
 
-ask turtles
 
-[
 
-if (lane = 0 and lane = 7 and lane = 3 )
-
-[
-
-set speed 0
-
-]
-
-]
-
-]
 
 ;;-------------------------------------------------------------------------;;
 
-ifelse ( South-east = "green" )
+if ( South-east = "green" )
 
 [
 
@@ -554,27 +524,13 @@ move-cars
 
 ]
 
-[
 
-ask turtles
 
-[
 
-if ( lane = 4 and lane = 7 and lane = 0 )
-
-[
-
-set speed 0
-
-]
-
-]
-
-]
 
 ;;--------------------------------------------------------------------------;;
 
-ifelse ( South-west = "green" )
+if ( South-west = "green" )
 
 [
 
@@ -594,22 +550,5 @@ move-cars
 
 ]
 
-[
-
-ask turtles
-
-[
-
-if ( lane = 4 and lane = 3 and lane = 0 )
-
-[
-
-set speed 0
-
-]
-
-]
-
-]
 
 end
