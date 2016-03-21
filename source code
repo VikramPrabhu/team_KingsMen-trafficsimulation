@@ -476,6 +476,26 @@ end
 
 to move
 
+    if ( North-west = "green" )
+    [
+
+      ask turtles
+      [
+        if [intersection?] of patch-here or [plane5?] of patch-here
+        [
+          if ( lane = 7 )
+          [
+            let tempspeed speed
+            set lane  5
+            set speed 1.2
+            forward-cars-as-per-speed
+            ;set speed tempspeed
+          ]
+        ]
+
+      ]
+    ]
+
 if ( North-west = "green" )
 
 [ ask turtles
@@ -494,9 +514,26 @@ move-cars
 
 ]
 
-
-
 ;;---------------------------------------------------------------------;;
+
+    if (North-east = "green" )
+    [
+       ask turtles
+      [
+        if [intersection?] of patch-here or [plane2?] of patch-here
+        [
+          if ( lane = 0 )
+          [
+            let tempspeed speed
+            set lane  2
+            set speed 1.2
+           forward-cars-as-per-speed
+           ;set speed tempspeed
+          ]
+        ]
+      ]
+    ]
+
 
 if ( North-east = "green" )
 
@@ -518,11 +555,25 @@ move-cars
 
 ]
 
-
-
-
-
 ;;-------------------------------------------------------------------------;;
+
+    if ( South-east = "green")
+    [
+       ask turtles
+      [
+        if [intersection?] of patch-here or [plane6?] of patch-here
+        [
+          if ( lane = 4 )
+          [
+            let tempspeed speed
+            set lane  6
+            set speed max-speed
+            forward-cars-as-per-speed
+            ;set speed tempspeed
+          ]
+        ]
+      ]
+    ]
 
 if ( South-east = "green" )
 
@@ -544,11 +595,26 @@ move-cars
 
 ]
 
-
-
-
-
 ;;--------------------------------------------------------------------------;;
+
+     if ( South-west = "green")
+     [
+
+      ask turtles
+      [
+        if [intersection?] of patch-here or [plane1?] of patch-here
+        [
+          if ( lane = 3 )
+          [
+            let tempspeed speed
+            set lane  1
+            set speed max-speed
+            forward-cars-as-per-speed
+            ;set speed tempspeed
+          ]
+        ]
+      ]
+     ]
 
 if ( South-west = "green" )
 
