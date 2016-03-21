@@ -720,3 +720,135 @@ to forward-cars-as-per-speed
          changing-lanes
          ;separate-cars
 end
+
+to changing-lanes
+
+  if ( lane = 0 )
+  [
+    let turtle-ahead turtles-on patch-here
+    if (change-lane = 1 )
+    [
+        if ( pxcor = 2 and pycor = 2 )
+        [
+          
+          set heading 180
+          set lane 6
+          assign-correct-coordinates
+        ]
+    ]
+    if ( change-lane = 2 )
+    [
+      if ( pxcor = -2 and pycor = 2 )
+      [
+        set heading 0
+        set lane 5
+        assign-correct-coordinates
+      ]
+    ]
+   ]
+  ;;----------------------------------------------------------------------------;;
+  if ( lane = 3 )
+  [
+     let turtle-ahead turtles-on patch-here
+    if ( change-lane = 1 )
+    [
+     if ( pxcor = 2 and pycor = -2 )
+      [
+        set heading 180
+        set lane 6
+        assign-correct-coordinates
+      ]
+    ]
+      if ( change-lane = 2 )
+      [
+       if ( pxcor = -2 and pycor = -2 )
+        [
+          set heading 0
+          set lane 5
+          assign-correct-coordinates
+        ]
+      ]
+    ]
+  ;;----------------------------------------------------------------------------;;
+
+     if ( lane = 4 )
+  [
+     let turtle-ahead turtles-on patch-here
+    if ( change-lane = 1 )
+    [
+     if ( pxcor = 2 and pycor = -2 )
+      [
+        set heading -90
+        set lane 1
+        assign-correct-coordinates
+      ]
+    ]
+      if ( change-lane = 2 )
+      [
+        if ( pxcor = 2 and pycor = 2 )
+        [
+          set heading 90
+          set lane 2
+          assign-correct-coordinates
+        ]
+      ]
+    ]
+
+;;----------------------------------------------------------------------------;;
+   if ( lane = 7 )
+  [
+    if ( change-lane = 1 )
+    [
+     if ( pxcor = -2 and pycor = -2 )
+      [
+        set heading -90
+        set lane 1
+        assign-correct-coordinates
+      ]
+    ]
+      if ( change-lane = 2 )
+      [
+        if ( pxcor = -2 and pycor = 2 )
+        [
+          set heading 90
+          set lane 2
+          assign-correct-coordinates
+        ]
+      ]
+    ]
+end
+
+to assign-correct-coordinates
+
+  if ( lane = 1)
+  [
+    if ( ycor < -2 or (ycor < 0 and ycor > -2 ) )
+    [
+      set ycor -2
+    ]
+  ]
+
+   if (lane = 2)
+   [
+          if ( ycor > 2 or ( ycor > 0 and ycor < 2 ))
+          [
+            set ycor 2
+          ]
+   ]
+
+  if (lane = 6)
+  [
+        if ( xcor > 2 or (xcor > 0 and xcor < 2))
+        [
+          set xcor 2
+        ]
+  ]
+
+  if (lane = 5)
+  [
+        if ( xcor < -2  or ( xcor < 0 and xcor > -2))
+        [
+          set xcor -2
+        ]
+  ]
+end
