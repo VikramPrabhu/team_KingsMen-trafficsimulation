@@ -546,7 +546,7 @@ ask turtles
 
 [
 
-if ( lane = 4 or lane = 6 or lane = 2 or lane = 5)
+if ( lane = 4 or lane = 6 or lane = 2 or lane = 5 or lane = 1)
 
 [
 
