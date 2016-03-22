@@ -1051,3 +1051,85 @@ to kill-the-cars-crossed-red-light
     ]
   ]
 end
+
+to Emergency-Vehicles
+
+  if (emergency-counter = 0 )
+
+ [
+
+   set emergency-counter 1
+
+   create-ambulances 1
+
+   [
+
+     set size 2
+
+     set lane random 8
+
+     set change-lane random 3
+
+     set speed 1.5
+
+     set color blue
+
+
+     if ( lane = 1 ) [ set lane 0]
+
+     if ( lane = 2 ) [ set lane 3 ]
+
+     if ( lane = 5 ) [ set lane 4 ]
+
+     if ( lane = 6 ) [ set lane 7 ]
+
+
+
+     if ( lane = 0 )
+
+       [
+
+         setxy min-pxcor 1
+
+         set heading 90
+
+       ]
+
+
+       if ( lane = 3 )
+
+       [
+
+         setxy max-pxcor -1
+
+         set heading -90
+
+        ]
+
+
+       if ( lane = 4 )
+
+       [
+
+          setxy 1 max-pycor
+
+          set heading 180
+
+       ]
+
+
+       if ( lane = 7 )
+
+        [
+
+          setxy -1 min-pycor
+
+          set heading 0
+
+        ]
+
+   ]
+
+ ]
+ 
+end
