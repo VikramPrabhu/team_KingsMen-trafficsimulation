@@ -1366,3 +1366,101 @@ to Emergency-vehicles-changing-lanes
   ]
 
 end
+
+to stop-vehicles-in-the-lane-of-emergency-vehicle
+
+   let elane [lane] of one-of ambulances
+
+
+
+
+  ask cars with [ lane = elane ]
+
+  [
+
+    set emergency-speed speed
+
+    set speed 0
+
+  ]
+
+end
+
+
+to resume-all-other-cars-after-emergency-vehicle-left
+
+  ;show (word"Entered resume vehicles method")
+
+  set North-west emergency-north-west
+
+  set North-east emergency-north-east
+
+  set South-west emergency-south-west
+
+  set South-east emergency-south-east
+
+
+
+  if ( North-west = "green" )
+
+  [
+
+    ask patches with [ pxcor = -3 and pycor = 2] [ set pcolor green]
+
+  ]
+
+
+  if ( North-east = "green" )
+
+  [
+
+    ask patches with [ pxcor = 2 and pycor = 3]  [ set pcolor green]
+
+  ]
+
+
+  if ( South-east = "green" )
+
+  [
+
+    ask patches with [ pxcor = 3 and pycor = -2] [ set pcolor green]
+
+  ]
+
+
+
+  if ( South-west = "green" )
+
+  [
+
+    ask patches with [ pxcor = -2 and pycor = -3][ set pcolor green]
+
+  ]
+
+  ask cars
+
+  [
+
+   forward-cars-as-per-speed
+
+  ]
+
+end
+
+
+to print-output
+
+  output-print (word " Average speed - " mean [speed] of cars)
+
+    output-print (word " Maximum speed - " max [ speed ] of cars)
+
+      output-print ( word "Density of cars - " count cars with [ lane = 0 ])
+
+
+      user-message ( word " Average speed - " mean [speed] of cars
+
+    " Maximum speed - " max [ speed ] of cars
+
+       word "Density of cars - " count cars with [ lane = 0 ])
+
+end
