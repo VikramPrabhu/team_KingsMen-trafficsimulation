@@ -1366,3 +1366,29 @@ to Emergency-vehicles-changing-lanes
   ]
 
 end
+
+to forward-the-emergency-vehicle
+
+
+   ask ambulances
+   [
+     if ( ecounter = 1 )
+     [
+       if ( xcor = max-pxcor or xcor = min-pxcor or ycor = max-pycor or ycor = min-pycor )
+       [
+         resume-all-other-cars-after-emergency-vehicle-left
+         die
+
+         stop
+         sound:stop-music
+       ]
+     ]
+      fd speed
+      test-sound
+   ]
+ end
+
+
+to  test-sound
+  sound:play-sound "/Users/jay/Downloads/Ambulance.wav"
+end
