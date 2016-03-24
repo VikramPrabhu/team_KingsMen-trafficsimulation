@@ -2,6 +2,18 @@
 
 globals
 [
+ecounter
+
+  emergency-north-east
+
+  emergency-north-west
+
+  emergency-south-east
+
+  emergency-south-west
+
+  emergency-counter
+  
   tempturtle
   templane
   new-counter
@@ -41,6 +53,9 @@ breed[omnies omni]
 
 turtles-own
 [
+
+emergency-speed
+
   speed         ;;;; speed of each car
   max-speed     ;;;; maximum speed of the car
   min-speed     ;;;; minimum speed of the car
