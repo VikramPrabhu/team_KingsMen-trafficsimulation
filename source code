@@ -1,7 +1,9 @@
 ;source code
 
+extensions [sound]
 breed[cars car]
 breed[water]
+breed[ambulances ambulance]
 
 globals
 [
