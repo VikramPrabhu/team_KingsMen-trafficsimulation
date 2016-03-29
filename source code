@@ -7,7 +7,9 @@ globals
 [
 snow-counter
 ecounter
-
+emergency-dead
+emergency-lane
+ecounter
   emergency-north-east
 
   emergency-north-west
@@ -1152,11 +1154,8 @@ end
 
 to Emergency-Vehicles
 
-  if (emergency-counter = 0 )
-
- [
-
-   set emergency-counter 1
+set ecounter 0
+set emergency-dead 0
 
    create-ambulances 1
 
@@ -1167,19 +1166,20 @@ to Emergency-Vehicles
      set lane random 8
 
      set change-lane random 3
+     set shape "arrow"
 
      set speed 1.5
 
      set color blue
 
 
-     if ( lane = 1 ) [ set lane 0]
+     if ( lane = 2 ) [ set lane 0]
 
-     if ( lane = 2 ) [ set lane 3 ]
+     if ( lane = 1 ) [ set lane 3 ]
 
-     if ( lane = 5 ) [ set lane 4 ]
+     if ( lane = 6 ) [ set lane 4 ]
 
-     if ( lane = 6 ) [ set lane 7 ]
+     if ( lane = 5 ) [ set lane 7 ]
 
 
 
@@ -1225,42 +1225,27 @@ to Emergency-Vehicles
           set heading 0
 
         ]
-
+set hidden? true
+set emergency-lane lane
+stop-vehicles-during-emergency
    ]
 
- ]
+ 
  
 end
 
 to go-emergency
 
+ask ambulances
+[
+ set hidden? false
+ ]
   Emergency-vehicles-changing-lanes
-
-
-
+forward-the-emergency-vehicle
 
 end
 
-
-
-
-
-
-
-
-
-
-
-
-
 to Emergency-vehicles-changing-lanes
-
-
-
-
-  if ( emergency-counter = 1 )
-
-  [
 
     ask ambulances
 
@@ -1270,7 +1255,19 @@ to Emergency-vehicles-changing-lanes
 
   [
 
-   ;forward-the-emergency-vehicle
+   if ( change-lane = 0 or change-lane = 3 )
+
+   [
+
+     if ( pxcor = -3 and pycor = 1 )
+
+     [
+
+       set ecounter 1
+
+     ]
+
+   ]
 
     if (change-lane = 1 )
 
@@ -1287,9 +1284,7 @@ to Emergency-vehicles-changing-lanes
 
           set lane 6
 
-          assign-correct-coordinates
-
-          ;forward-the-emergency-vehicle
+          set ecounter 1
 
         ]
 
@@ -1307,7 +1302,7 @@ to Emergency-vehicles-changing-lanes
 
         set lane 5
 
-        assign-correct-coordinates
+        set ecounter 1
 
       ]
 
@@ -1321,6 +1316,20 @@ to Emergency-vehicles-changing-lanes
 
   [
 
+     if ( change-lane = 0 or change-lane = 3 )
+
+   [
+
+     if ( pxcor = 3 and pycor = -1 )
+
+     [
+
+       set ecounter 1
+
+     ]
+
+   ]
+
 
 
 
@@ -1328,7 +1337,7 @@ to Emergency-vehicles-changing-lanes
 
     [
 
-     if ( pxcor = 1 and pycor = -2 )
+     if ( pxcor = 2 and pycor = -1 )
 
       [
 
@@ -1336,7 +1345,10 @@ to Emergency-vehicles-changing-lanes
 
         set lane 6
 
-        assign-correct-coordinates
+        set ecounter 1
+
+
+
 
       ]
 
@@ -1346,7 +1358,7 @@ to Emergency-vehicles-changing-lanes
 
       [
 
-       if ( pxcor = -1 and pycor = -2 )
+       if ( pxcor = -2 and pycor = -1 )
 
         [
 
@@ -1354,7 +1366,10 @@ to Emergency-vehicles-changing-lanes
 
           set lane 5
 
-          assign-correct-coordinates
+          set ecounter 1
+
+
+
 
         ]
 
@@ -1374,6 +1389,23 @@ to Emergency-vehicles-changing-lanes
 
 
 
+    if ( change-lane = 0 or change-lane = 3 )
+
+   [
+
+     if ( pxcor = 1 and pycor = -2 )
+
+     [
+
+       set ecounter 1
+
+     ]
+
+   ]
+
+
+
+
     if ( change-lane = 1 )
 
     [
@@ -1386,7 +1418,10 @@ to Emergency-vehicles-changing-lanes
 
         set lane 1
 
-        assign-correct-coordinates
+        set ecounter 1
+
+
+
 
       ]
 
@@ -1404,7 +1439,10 @@ to Emergency-vehicles-changing-lanes
 
           set lane 2
 
-          assign-correct-coordinates
+          set ecounter 1
+
+
+
 
         ]
 
@@ -1421,11 +1459,31 @@ to Emergency-vehicles-changing-lanes
 
   [
 
+
+
+
+   if ( change-lane = 0 or change-lane = 3 )
+
+   [
+
+     if ( pxcor = -1 and pycor = -3 )
+
+     [
+
+       set ecounter 1
+
+     ]
+
+   ]
+
+
+
+
     if ( change-lane = 1 )
 
     [
 
-     if ( pxcor = -1 and pycor = -2 )
+     if ( pxcor = -1 and pycor = -1 )
 
       [
 
@@ -1433,7 +1491,9 @@ to Emergency-vehicles-changing-lanes
 
         set lane 1
 
-        assign-correct-coordinates
+        set ecounter 1
+
+        ;assign-correct-coordinates
 
       ]
 
@@ -1451,7 +1511,10 @@ to Emergency-vehicles-changing-lanes
 
           set lane 2
 
-          assign-correct-coordinates
+          set ecounter 1
+
+
+
 
         ]
 
@@ -1460,8 +1523,6 @@ to Emergency-vehicles-changing-lanes
     ]
 
     ]
-
-  ]
 
 end
 
@@ -1472,17 +1533,20 @@ to forward-the-emergency-vehicle
    [
      if ( ecounter = 1 )
      [
-       if ( xcor = max-pxcor or xcor = min-pxcor or ycor = max-pycor or ycor = min-pycor )
+       if ( xcor >= max-pxcor or xcor <= min-pxcor or ycor >= max-pycor or ycor <= min-pycor )
        [
-         resume-all-other-cars-after-emergency-vehicle-left
+         set emergency-dead 1
          die
 
-         stop
-         sound:stop-music
+         
        ]
      ]
       fd speed
       test-sound
+   ]
+   if emergency-dead = 1
+   [  
+   resume-all-the-vehicles-after-emergency-vehicle-moved-out
    ]
  end
 
@@ -1491,96 +1555,201 @@ to  test-sound
   sound:play-sound "/Users/jay/Downloads/Ambulance.wav"
 end
 
-to stop-vehicles-in-the-lane-of-emergency-vehicle
-
-   let elane [lane] of one-of ambulances
-
-
-  ask cars with [ lane = elane ]
-
-  [
-
-    set emergency-speed speed
-
-    set speed 0
-
-  ]
-
-end
-
-to resume-all-other-cars-after-emergency-vehicle-left
-
-  ;show (word"Entered resume vehicles method")
-
-  set North-west emergency-north-west
-
-  set North-east emergency-north-east
-
-  set South-west emergency-south-west
-
-  set South-east emergency-south-east
-
-
-  if ( North-west = "green" )
-
-  [
-
-    ask patches with [ pxcor = -3 and pycor = 2] [ set pcolor green]
-
-  ]
-
-
-  if ( North-east = "green" )
-
-  [
-
-    ask patches with [ pxcor = 2 and pycor = 3]  [ set pcolor green]
-
-  ]
-
-
-  if ( South-east = "green" )
-
-  [
-
-    ask patches with [ pxcor = 3 and pycor = -2] [ set pcolor green]
-
-  ]
-
-
-  if ( South-west = "green" )
-
-  [
-
-    ask patches with [ pxcor = -2 and pycor = -3][ set pcolor green]
-
-  ]
+to move-on-to-lane-during-emergency-vehicle
 
   ask cars
 
-  [
+    [
 
-   forward-cars-as-per-speed
+      if ( [intersection?] of patch-here )
 
-  ]
+      [
 
+        fd 1
+
+        move-on-to-lane-during-emergency-vehicle
+
+      ]
+
+    ]
 
 end
 
 
-to print-output
-
-  output-print (word " Average speed - " mean [speed] of cars)
-
-    output-print (word " Maximum speed - " max [ speed ] of cars)
-
-      output-print ( word "Density of cars - " count cars with [ lane = 0 ])
 
 
-      user-message ( word " Average speed - " mean [speed] of cars
+to stop-vehicles-during-emergency
 
-    " Maximum speed - " max [ speed ] of cars
 
-       word "Density of cars - " count cars with [ lane = 0 ])
+
+
+    set emergency-north-east North-east
+
+    set emergency-north-west North-West
+
+    set emergency-south-east South-east
+
+    set emergency-south-west South-west
+
+
+
+
+  if ( emergency-lane = 0 )
+
+  [
+
+    ask patches with [ pxcor = 3 and pycor = -2] [ set pcolor red]
+
+    ask patches with [ pxcor = 2 and pycor = 3]  [ set pcolor red]
+
+    ask patches with [ pxcor = -2 and pycor = -3][ set pcolor red]
+
+    set North-east "red"
+
+    set South-east "red"
+
+    set South-west "red"
+
+  ]
+
+  if ( emergency-lane = 4 )
+
+  [
+
+    ask patches with [ pxcor = -3 and pycor = 2] [ set pcolor red]
+
+    ask patches with [ pxcor = 3 and pycor = -2] [ set pcolor red]
+
+    ask patches with [ pxcor = -2 and pycor = -3][ set pcolor red]
+
+    set North-west "red"
+
+    set South-east "red"
+
+    set South-west "red"
+
+  ]
+
+  if ( emergency-lane = 3 )
+
+  [
+
+    ask patches with [ pxcor = -3 and pycor = 2] [ set pcolor red]
+
+    ask patches with [ pxcor = 2 and pycor = 3]  [ set pcolor red]
+
+    ask patches with [ pxcor = -2 and pycor = -3][ set pcolor red]
+
+    set North-east "red"
+
+    set North-west "red"
+
+    set South-west "red"
+
+  ]
+
+  if ( emergency-lane = 7 )
+
+  [
+
+    ask patches with [ pxcor = -3 and pycor = 2] [ set pcolor red]
+
+    ask patches with [ pxcor = 3 and pycor = -2] [ set pcolor red]
+
+    ask patches with [ pxcor = 2 and pycor = 3]  [ set pcolor red]
+
+    set North-east "red"
+
+    set North-west "red"
+
+    set South-east "red"
+
+  ]
+
+
+
+
+  move-on-to-lane-during-emergency-vehicle
+
+
+
+
+  ask cars with [ lane = 5 or lane = 1 or lane = 6 ]
+
+  [ forward-cars-as-per-speed ]
+
+end
+
+
+
+
+
+
+
+to resume-all-the-vehicles-after-emergency-vehicle-moved-out
+
+
+
+  if ( (North-west = "red" or North-west = 0) and
+
+       (North-east = "red"  or North-east = 0) and
+
+       (South-east = "red"  or South-east = 0) and
+
+       (South-west = "red"  or South-west = 0))
+
+  [
+
+    set North-east emergency-north-east
+
+    set North-West emergency-north-west
+
+    set South-east emergency-south-east
+
+    set South-west emergency-south-west
+
+
+
+
+    if ( North-west = "green" )
+
+     [
+
+       ask patch -3 2 [ set pcolor green]
+
+     ]
+
+
+
+
+     if ( North-east = "green" )
+
+     [
+
+       ask patch 2 3  [ set pcolor green]
+
+     ]
+
+
+
+
+     if ( South-east = "green")
+
+     [
+
+        ask patch 3 -2  [ set pcolor green]
+
+     ]
+
+
+     if ( South-west = "green" )
+
+     [
+
+      ask patch -2 -3  [ set pcolor green]
+
+     ]
+
+  ]
 
 end
