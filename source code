@@ -580,6 +580,10 @@ end
 to go
 
 rash-driver-behaviour
+if ( (counter mod 40) = 0 )
+[
+count-cars
+]
 
 periodic-change-of-lanes-in-vehicles
 move
