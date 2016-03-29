@@ -1,7 +1,11 @@
 ;source code
 
+breed[cars car]
+breed[water]
+
 globals
 [
+snow-counter
 ecounter
 
   emergency-north-east
@@ -47,8 +51,7 @@ patches-own
 ]
 
 
-breed[cars car]
-breed[omnies omni]
+
 
 
 turtles-own
@@ -68,6 +71,86 @@ emergency-speed
 
   slane
 ]
+
+water-own
+[
+ snow-speed
+]
+
+to create-snow
+  
+  ifelse ( snow )
+  [
+
+ create-water 100
+ [
+   set snow-speed 2
+   set color white
+   set shape "circle"
+   set size 0.5
+   set heading 180
+   set xcor random min-pxcor
+   set ycor random max-pycor
+ ]
+
+  create-water 100
+ [
+   set snow-speed 2
+   set color white
+   set shape "circle"
+   set size 0.5
+   set heading 180
+   set xcor random min-pxcor
+   set ycor random min-pycor
+ ]
+  create-water 100
+ [
+   set snow-speed 2
+   set color white
+   set shape "circle"
+   set size 0.5
+   set heading 180
+   set xcor random max-pxcor
+   set ycor random min-pycor
+ ]
+  create-water 100
+ [
+   set snow-speed 2
+   set color white
+   set shape "circle"
+   set size 0.5
+   set heading 180
+   set xcor random max-pxcor
+   set ycor random max-pycor
+ ]
+  for-snow
+  ]
+  [
+
+    user-message ( word "Turn snow on ")
+
+
+  ]
+end
+
+
+to for-snow
+
+  if ( snow )
+  [
+      ask water
+  [
+    fd snow-speed
+  ]
+
+    if ( ticks = number-of-ticks )
+    [
+    ask water [ die ]
+    stop
+    ]
+  ]
+end
+
 
 
 to setup
