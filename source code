@@ -58,7 +58,7 @@ patches-own
 
 
 
-turtles-own
+cars-own
 [
 
 emergency-speed
@@ -72,8 +72,8 @@ emergency-speed
   front-car     ;;;; if there is any car in the front
   acceleration  ;;;; tells how much a car should accelerate
   deceleration  ;;;; tells how much a car should decelerate
-
   slane
+  rash-car?
 ]
 
 water-own
@@ -178,6 +178,7 @@ to setup
   set-intersections
  ; show-count-of-patches
   setup-cars
+  rash-driving-car
   set North-west "green"
   set counter 0
   change-green-light-NW
@@ -304,9 +305,34 @@ end
 ;;-----------------------------------To initialize cars and set their parameters-------------------------------------------------------------------------------------------;;
 
 to setup-cars
-  create-turtles 30
+  create-cars number-of-cars
   [
-      set size 1
+      
+
+        car-parameters
+        separate-cars ;;to prevent more than one turtle on the same patch
+        cars-only-in-lanes ;; cars should not be present beyond the traffic lights when the simulation starts
+      ]
+end
+
+to count-cars
+let no_of_cars count cars
+
+if ( no_of_cars < number_of_cars )
+[
+  create-cars ( number-of-cars - no_of_cars )
+  [
+    car-parameters
+    separate-cars
+    cars-only-in-lanes
+    ]
+    ]
+    end
+
+
+to car-parameters
+set rash-car? false
+set size 1
      set color blue
      set speed 0.2 + random-float 1.1
      set max-speed 1.2
@@ -424,12 +450,7 @@ to setup-cars
        if ( lane = 6 ) or ( lane = 4 )
         [ set heading 180 ]
 
-
-        separate-cars ;;to prevent more than one turtle on the same patch
-        cars-only-in-lanes ;; cars should not be present beyond the traffic lights when the simulation starts
-      ]
 end
-
 ;;---------------------------------------------------------------------------------------------------------------------------------------------------------------------------;;
 ;;------------------------------to separate turtles which are on same patch ------------------------------------------------------------------------------------------------;;
 
@@ -533,9 +554,33 @@ end
 
 ;;---------------------------------------------------------------------------------------------------------------------------------------------------------------------------;;
 
+to rash-driving-car
+
+  ask one-of cars [set rash-car? true ]
+
+  let rash-car one-of cars with [rash-car? = true ]
+
+  ask cars with [ rash-car? = true ]
+
+  [
+
+    set color red
+
+  ]
+
+
+  ;watch rash-car
+
+end
+
+
+
 ;;------------------------------ To let cars move along the lanes -----------------------------------------------------------------------------------------------------------;;
 
 to go
+
+rash-driver-behaviour
+
 periodic-change-of-lanes-in-vehicles
 move
 set counter counter + 1
@@ -1684,10 +1729,6 @@ end
 
 
 
-
-
-
-
 to resume-all-the-vehicles-after-emergency-vehicle-moved-out
 
 
@@ -1753,5 +1794,205 @@ to resume-all-the-vehicles-after-emergency-vehicle-moved-out
      ]
 
   ]
+
+end
+
+to rash-driver-behaviour
+
+  ask cars with [ rash-car? = true ]
+
+  [
+
+     if ( front-car != nobody and front-car != 0)
+
+    [
+
+     if ( lane = 0 or lane = 2)
+
+     [
+
+      set xcor xcor + 1
+
+      set ycor  1
+
+    ]
+
+
+
+
+    if ( lane = 1 or lane = 3)
+
+    [
+
+      set xcor xcor - 1
+
+      set ycor  -1
+
+    ]
+
+
+
+
+    if ( lane = 4 or lane = 6)
+
+    [
+
+      set xcor 1
+
+      set ycor ycor - 1
+
+    ]
+
+
+
+
+    if ( lane = 5 or lane = 7)
+
+    [
+
+      set xcor -1
+
+      set ycor ycor + 1
+
+    ]
+
+  ]
+
+
+
+
+
+
+
+  if ( front-car = nobody )
+
+  [
+
+  if ( (lane = 0 or lane = 2 ) and ycor = 1)
+
+  [
+
+    if ( not any? cars-at (xcor + 2) 2 )
+
+    [
+
+      set xcor xcor + 2
+
+      set ycor 2
+
+    ]
+
+  ]
+
+
+
+
+  if ( (lane = 3 or lane = 1 ) and ycor = -1 )
+
+  [
+
+    if ( not any? cars-at ( xcor - 2) -2 )
+
+     [
+
+        set xcor xcor - 2
+
+        set ycor -2
+
+     ]
+
+  ]
+
+
+
+
+  if ( (lane = 4 or lane = 6 ) and xcor = 1 )
+
+  [
+
+    if ( not any? cars-at 2 (ycor - 2) )
+
+      [
+
+        set xcor 2
+
+        set ycor ycor - 2
+
+      ]
+
+    ]
+
+
+
+
+  if ( (lane = 5 or lane = 7 ) and xcor = -1 )
+
+  [
+
+    if ( not any? cars-at -2 (ycor + 2) )
+
+      [
+
+        set xcor -2
+
+        set ycor ycor + 2
+
+      ]
+
+  ]
+
+
+
+
+  ]
+
+
+
+
+
+
+
+  if ( lane = 4 and ([pycor] of patch-here <= 3  or [intersection?] of patch-here ) and (North-east = "red" or North-east = 0 ))
+
+      [
+
+         die
+
+      ]
+
+
+
+
+      if ( lane = 0 and ([pxcor] of patch-here >= -3 or [intersection?] of patch-here ) and (North-west = "red" or North-west = 0))
+
+      [
+
+         die
+
+      ]
+
+
+
+
+      if ( lane = 3 and ([pxcor] of patch-here <= 3 or [intersection?] of patch-here ) and (South-east = "red" or South-east = 0) )
+
+      [
+
+        die
+
+      ]
+
+
+
+
+      if ( lane = 7 and ([pycor] of patch-here >= -3 or [intersection?] of patch-here ) and (South-west = "red" or South-west = 0 ) )
+
+      [
+
+         die
+
+      ]
+
+]
 
 end
