@@ -351,6 +351,239 @@ end
 
 
 
+to setup-pedestrians
+
+  let color-list [yellow pink cyan gray orange sky violet ]
+      create-pedestrians 10
+      [
+        set size 1
+        set shape "circle"
+        set color one-of color-list
+        set p-speed random 0.5
+        set p-minspeed 0.2
+        set p-maxspeed 0.5
+        set p-deceleration 0.05
+        set p-acceleration 0.0035
+
+        ;set direction random 2
+        set pedestrian-lane random 8
+        set change-pedestrian-lane 0
+
+        if ( pedestrian-lane = 0 )
+        [
+          set xcor random min-pxcor
+          set ycor 3
+          set heading 90
+
+        ]
+
+        if ( pedestrian-lane = 1 )
+        [
+          set xcor random min-pxcor
+          set ycor -3
+          set heading -90
+
+        ]
+
+        if ( pedestrian-lane = 2 )
+        [
+          set xcor random max-pxcor
+          set ycor 3
+          set heading 90
+        ]
+
+        if ( pedestrian-lane = 3 )
+        [
+          set xcor random max-pxcor
+          set ycor -3
+         set heading -90
+        ]
+
+        if ( pedestrian-lane = 4 )
+        [
+          set xcor 3
+          set ycor random max-pycor
+          set heading 180
+        ]
+
+        if ( pedestrian-lane = 5 )
+        [
+          set xcor -3
+          set ycor random max-pycor
+          set heading 0
+        ]
+
+        if ( pedestrian-lane = 6 )
+        [
+          set xcor 3
+          set ycor random min-pycor
+          set heading 180
+        ]
+
+        if ( pedestrian-lane = 7 )
+        [
+          set xcor -3
+          set ycor random min-pycor
+          set heading 0
+        ]
+
+        pedestrians-only-in-lanes
+      ]
+end
+
+
+to pedestrians-only-in-lanes
+  if ( pedestrian-lane = 0 or pedestrian-lane = 1 )
+  [
+    if ( xcor >= -3 )
+    [
+      let temp random min-pxcor
+      ifelse ( temp >= -3 )
+      [
+        pedestrians-only-in-lanes
+      ]
+      [
+        set xcor temp
+      ]
+    ]
+  ]
+
+  if ( pedestrian-lane = 2 or pedestrian-lane = 3 )
+  [
+     if ( xcor <= 3 )
+     [
+       let temp random max-pxcor
+       ifelse ( temp <= 3 )
+       [
+         pedestrians-only-in-lanes
+       ]
+       [
+         set xcor temp
+       ]
+     ]
+  ]
+
+  if ( pedestrian-lane = 4 or pedestrian-lane = 5 )
+  [
+    if ( ycor <= 3 )
+    [
+      let temp random max-pycor
+      ifelse ( temp <= 3 )
+      [
+        pedestrians-only-in-lanes
+      ]
+      [
+       set ycor temp
+      ]
+    ]
+  ]
+
+  if ( pedestrian-lane = 6 or pedestrian-lane = 7 )
+  [
+    if ( ycor >= -3 )
+    [
+      let temp random min-pycor
+      ifelse ( temp >= -3 )
+      [
+        pedestrians-only-in-lanes
+      ]
+      [
+        set ycor temp
+      ]
+    ]
+  ]
+end
+
+
+to forward-pedestrians
+  check-any-pedestrians-waiting-to-cross-roads
+  if ( p-speed < p-minspeed ) [ set p-speed p-minspeed ]
+  if ( p-speed > p-maxspeed ) [ set p-speed p-maxspeed ]
+  fd p-speed
+end
+
+
+
+
+
+
+to move-pedestrians
+  ask pedestrians
+  [
+    assign-different-lanes-to-pedestrians
+
+    if ( pedestrian-lane = 0 or pedestrian-lane = 5)
+    [
+      ifelse ( [pxcor] of patch-here = -3 and [pycor] of patch-here = 3 )
+      [
+        ifelse ( change-pedestrian-lane = 0 )
+        [
+          assign-different-lanes-during-direction-change-to-pedestrians
+
+        ]
+        [
+         set p-tempspeed p-speed
+         set p-speed 0
+        ]
+       ]
+       [ forward-pedestrians ]
+    ]
+
+    if ( pedestrian-lane = 1 or pedestrian-lane = 7 )
+    [
+      ifelse ( [pxcor] of patch-here = -3 and [pycor] of patch-here = -3 )
+      [
+         ifelse ( change-pedestrian-lane = 0 )
+        [
+          assign-different-lanes-during-direction-change-to-pedestrians
+
+        ]
+        [
+         set p-tempspeed p-speed
+         set p-speed 0
+        ]
+      ]
+
+      [ forward-pedestrians ]
+    ]
+
+    if ( pedestrian-lane = 3 or pedestrian-lane = 6 )
+    [
+      ifelse ( [pxcor] of patch-here = 3 and [pycor] of patch-here = -3 )
+      [
+        ifelse ( change-pedestrian-lane = 0 )
+        [
+          assign-different-lanes-during-direction-change-to-pedestrians
+
+        ]
+        [
+         set p-tempspeed p-speed
+         set p-speed 0
+        ]
+       ]
+      [ forward-pedestrians ]
+    ]
+
+    if ( pedestrian-lane = 4 or pedestrian-lane = 2 )
+    [
+      ifelse ( [pxcor] of patch-here = 3 and [pycor] of patch-here = 3 )
+      [
+        ifelse ( change-pedestrian-lane = 0 )
+        [
+          assign-different-lanes-during-direction-change-to-pedestrians
+
+        ]
+        [
+         set p-tempspeed p-speed
+         set p-speed 0
+        ]
+      ]
+      [ forward-pedestrians ]
+    ]
+
+  ]
+end
+
 ;;-----------------------------------To initialize cars and set their parameters-------------------------------------------------------------------------------------------;;
 
 to setup-cars
