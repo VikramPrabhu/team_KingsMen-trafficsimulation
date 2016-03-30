@@ -584,6 +584,139 @@ to move-pedestrians
   ]
 end
 
+
+
+
+to assign-different-lanes-during-direction-change-to-pedestrians
+
+
+    if ( change-pedestrian-lane = 0 )
+        [
+          if ( pedestrian-lane = 0 )
+          [
+            set xcor -3
+            set ycor 4
+            set heading 0
+            forward-pedestrians
+           ]
+
+          if ( pedestrian-lane = 1 )
+          [
+            set xcor -3
+            set ycor -4
+            set heading 180
+            forward-pedestrians
+           ]
+
+
+          if ( pedestrian-lane = 7 )
+          [
+            set xcor -4
+            set ycor -3
+            set heading -90
+            forward-pedestrians
+           ]
+
+
+          if ( pedestrian-lane = 4)
+          [
+            set xcor 4
+            set ycor 3
+            set heading 90
+            forward-pedestrians
+           ]
+
+         if ( pedestrian-lane = 3 )
+          [
+            set xcor 3
+            set ycor -4
+            set heading 180
+            forward-pedestrians
+           ]
+
+
+          if ( pedestrian-lane = 2 )
+          [
+            set xcor 3
+            set ycor 4
+            set heading 0
+            forward-pedestrians
+           ]
+
+          if ( pedestrian-lane = 6 and heading = 0)
+          [
+            set xcor 4
+            set ycor -3
+            set heading 90
+            forward-pedestrians
+           ]
+
+        ]
+
+end
+
+
+
+
+
+to assign-different-lanes-to-pedestrians
+
+
+    if ( [pedestrian-lane2?] of patch-here )
+    [
+      set pedestrian-lane 2
+    ]
+
+
+
+    if ( [pedestrian-lane3?] of patch-here )
+    [
+      set pedestrian-lane 3
+    ]
+
+
+
+    if ( [pedestrian-lane6?] of patch-here )
+    [
+      set pedestrian-lane 6
+    ]
+
+
+
+    if ( [pedestrian-lane7?] of patch-here )
+    [
+      set pedestrian-lane 7
+    ]
+
+
+
+    if ( [pedestrian-lane0?] of patch-here )
+    [
+      set pedestrian-lane 0
+    ]
+
+
+
+    if ( [pedestrian-lane1?] of patch-here )
+    [
+      set pedestrian-lane 1
+    ]
+
+
+
+    if ( [pedestrian-lane4?] of patch-here )
+    [
+      set pedestrian-lane 4
+    ]
+
+
+    if ( [pedestrian-lane5?] of patch-here )
+    [
+      set pedestrian-lane 5
+    ]
+
+end
+
 ;;-----------------------------------To initialize cars and set their parameters-------------------------------------------------------------------------------------------;;
 
 to setup-cars
