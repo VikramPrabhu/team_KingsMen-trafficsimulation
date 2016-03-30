@@ -139,6 +139,7 @@ water-own
   snow-speed                     ;; speed of the snow turtles
 ]
 
+
 to create-snow
   
   ifelse ( snow )
@@ -188,10 +189,7 @@ to create-snow
   for-snow
   ]
   [
-
     user-message ( word "Turn snow on ")
-
-
   ]
 end
 
@@ -257,6 +255,41 @@ to setup
   change-green-light-NW
   
 end
+
+
+to create-text-file
+  file-open user-new-file
+end
+
+
+to write-to-file
+  file-print " "
+  file-print ( word " Tick Number - " ticks )
+  file-print ( word " ------------------------------------------------------------" )
+  ask cars
+  [
+    file-print ( word " Who - " who "---speed - " actual-speed "---lane - " lane " ---wait-time - " wait-time " ----front car - " front-car)
+    file-print " "
+  ]
+
+  if ( counter >= 1 )
+  [
+    file-print( word " ***********************")
+    file-print ( word " Average wait time of all cars is - " mean [ wait-time] of cars "sec" )
+    file-print( word " ***********************")
+    file-print (word " Average speed of all the cars is - " mean [ actual-speed] of cars "mph")
+  ]
+end
+
+
+
+to write-to-file-when-dying
+  ask cars
+  [
+    file-print( word "The car - " who " died at lane - " lane )
+  ]
+end
+
 
 to set-intersections
   set intersections patches with [ ( pxcor >= -2 and pxcor <= 2 and pycor = 2 ) or
