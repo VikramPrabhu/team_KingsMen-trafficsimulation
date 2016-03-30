@@ -791,14 +791,19 @@ end
 ;;-----------------------------------To initialize cars and set their parameters-------------------------------------------------------------------------------------------;;
 
 to setup-cars
-  create-cars number-of-cars
-  [
-      
 
+ ifelse ( number-of-cars <= ( (max-pxcor - 3 ) * 8 ) / 2 )  ;; Checks whether the no of cars creating are less than the size of all the road lanes together.
+ [
+      create-cars number-of-cars
+      [
         car-parameters
         separate-cars ;;to prevent more than one turtle on the same patch
         cars-only-in-lanes ;; cars should not be present beyond the traffic lights when the simulation starts
       ]
+ ]
+ [
+    user-message(word " Reduce the number-of-cars and then try again")
+  ]
 end
 
 to count-cars
