@@ -1597,57 +1597,7 @@ to periodic-change-of-lanes-in-vehicles
    ]
 end
 
-to kill-the-cars-crossed-red-light
 
-  if (North-west = "red")
-  [
-    if ( lane = 0 )
-    [
-     if ( xcor > -3 and ycor = 2 )
-     [
-       show ( word"The turtle " who "died at lane " lane )
-       die
-     ]
-    ]
-  ]
-
-  if ( North-east = "red" )
-  [
-    if ( lane = 4 )
-    [
-     if ( xcor = 2 and ycor < 3 )
-     [
-       show ( word"The turtle " who "died at lane " lane )
-       die
-     ]
-    ]
-  ]
-
-  if ( South-east = "red" )
-  [
-    if ( lane = 3 )
-    [
-     if ( xcor < 3 and ycor = -2 )
-     ;if ([intersection?] of turtles-on patch-here )
-     [
-       show ( word"The turtle " who "died at lane " lane )
-       die
-     ]
-    ]
-  ]
-
-  if ( South-west = "red")
-  [
-    if ( lane = 7 )
-    [
-     if ( xcor = -2 and ycor > -3 )
-     [
-       show ( word"The turtle " who "died at lane " lane )
-       die
-     ]
-    ]
-  ]
-end
 
 to Emergency-Vehicles
 
