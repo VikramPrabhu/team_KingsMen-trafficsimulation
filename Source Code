@@ -360,37 +360,25 @@ to draw-margins
 ;;------------------------------------------------------------------------------------------------------------------------------------------;;
  ;;------------------------------------To assign patches to their respective lanes----------------------------------------------------------------;;
 
- set glane0 patches with [ pxcor < -2 and pycor = 2]
 
- set glane1 patches with [ pxcor < -2 and pycor = -2]
+ set glane0 patches with [ pxcor < -2 and (pycor = 2  or pycor = 1)]   ;;
+ set glane1 patches with [ pxcor < -2 and (pycor = -2 or pycor = -1)]  ;; assigning patches
+ set glane2 patches with [ pxcor > 2  and (pycor = 2  or pycor = 1)]   ;; to different lanes
+ set glane3 patches with [ pxcor > 2  and (pycor = -2 or pycor = -1)]  ;; as per their
+ set glane4 patches with [ (pxcor = 2  or pxcor = 1)  and pycor > 2]   ;; co-ordinates
+ set glane5 patches with [ (pxcor = -2 or pxcor = -1) and pycor > 2]   ;;
+ set glane6 patches with [ (pxcor = 2  or pxcor  = 1) and pycor < -2]  ;;
+ set glane7 patches with [ (pxcor = -2 or pxcor = -1) and pycor < -2]  ;;
 
- set glane2 patches with [ pxcor > 2 and pycor = 2]
 
- set glane3 patches with [ pxcor > 2 and pycor = -2]
 
- set glane4 patches with [ pxcor = 2 and pycor > 2]
-
- set glane5 patches with [ pxcor = -2 and pycor > 2]
-
- set glane6 patches with [ pxcor = 2 and pycor < -2]
-
- set glane7 patches with [ pxcor = -2 and pycor < -2]
- 
- 
- ask glane0 [ set plane0? true]
-
+ask glane0 [ set plane0? true]
 ask glane1 [ set plane1? true ]
-
 ask glane2 [ set plane2? true ]
-
 ask glane3 [ set plane3? true ]
-
 ask glane4 [ set plane4? true ]
-
 ask glane5 [ set plane5? true]
-
 ask glane6 [ set plane6? true ]
-
 ask glane7 [ set plane7? true]
 
 
