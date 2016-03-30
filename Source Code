@@ -1037,40 +1037,68 @@ end
 
 to go
 
-rash-driver-behaviour
-if ( (counter mod 40) = 0 )
+if (not snow )
 [
-count-cars
+ if( snow-counter = 1 )
+ [
+  ask water [ die ]
+ ]
+]
+
+
+if ( ticks = number-of-ticks )
+[
+ ask turtles [ die ]
+ clear-all
+ stop
+]
+cars-new-behaviour
+rash-driver-behaviour
+
+if ( (counter mod 4000) = 0 )
+[
+ count-cars
 ]
 
 periodic-change-of-lanes-in-vehicles
 move
+move-pedestrians
 set counter counter + 1
 
-if counter mod 25 = 0
+if ( counter mod Traffic-Lights-timer? = (Traffic-Lights-timer? - 4 ))
+ [
+   if ( North-west = "green" )
+   [ ask patches with [ pxcor = 2 and pycor = 3 ] [ set pcolor orange ] ]
 
+   if ( North-east = "green" )
+   [ ask patches with [ pxcor = 3 and pycor = -2 ] [ set pcolor orange ] ]
+
+   if ( South-east = "green" )
+   [ ask patches with [ pxcor = -2 and pycor = -3 ] [ set pcolor orange ] ]
+
+   if ( South-west = "green" )
+   [ ask patches with [ pxcor = -3 and pycor = 2 ] [ set pcolor orange ] ]
+ ]
+
+
+if counter mod Traffic-Lights-timer? = 0
 [
-
-change-globals-red
-
+ change-globals-red
 ]
 
 tick
-
+write-to-file
 end
 
 ;;-----------------------------------------------------------------------------------------------------------------------------------------------;;
 
 to accelerate-the-car
-
-set speed speed + acceleration
-
+   set speed speed + acceleration
 end
 
+
 to decelerate-the-car
-
-set speed [ speed ] of front-car - deceleration
-
+  set speed [ speed ] of front-car - deceleration
 end
 
 ;;--------------------------------procedure to make cars move-------------------------------------------------------------------------------------;;
