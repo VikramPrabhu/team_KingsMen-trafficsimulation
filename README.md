@@ -1,4 +1,4 @@
-# Team_KingsMen-TrafficSimulator
+# Team_KingsMen-TRAFFIC SIMULATOR
 
 Step 1: Download NetLogo from  http://ccl.northwestern.edu/netlogo/5.3.1/ 
 
