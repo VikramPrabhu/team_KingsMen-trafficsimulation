@@ -55,6 +55,19 @@ patches-own
 ]
 
 
+pedestrians-own
+[ 
+ direction                       ;; direction in which pedestrians should move along the lanes
+ p-tempspeed                     ;; to temporarily store the speed of the pedestrian
+ p-speed                         ;; speed of the pedestrians
+ p-minspeed                      ;; minimum speed a pedestrian should move
+ p-maxspeed                      ;; maximum speed a pedestrian should move
+ p-acceleration                  ;; acceleration of the pedestrian
+ p-deceleration                  ;; deceleration of the pedestrian
+ pedestrian-lane                 ;; lane on which a pedestrian is moving
+ change-pedestrian-lane          ;; lane onto which a pedestrian should change while taking a turn
+]
+
 
 
 
@@ -301,6 +314,42 @@ ask glane7 [ set plane7? true]
 ask patches with [ pxcor = 0 and pycor = 0 ] [ set pcolor black ]
 end
 ;;-------------------------------------------------------------------------------------------------------------------------------------------------------------------------;;
+
+to setup-pedestrian-lanes
+
+  ask patches with [ ( pxcor >= 3 and pycor = 3 ) or
+                     ( pxcor >= 3 and pycor = -3 ) or
+                     ( pxcor = 3  and pycor >= 3 ) or
+                     ( pxcor = 3  and pycor <= -3 ) or
+                     ( pxcor = -3 and pycor <= -3 ) or
+                     ( pxcor = -3 and pycor >= 3 ) or
+                     ( pxcor <= -3 and pycor = 3 ) or
+                     ( pxcor <= -3 and pycor = -3 ) ]
+   [ set pcolor black ]
+
+ set pedestrian-lane0 patches with [ pxcor <= -4 and pycor = 3 ]
+ set pedestrian-lane1 patches with [ pxcor <= -4 and pycor = -3 ]
+ set pedestrian-lane2 patches with [ pxcor >= 4 and pycor = 3 ]
+ set pedestrian-lane3 patches with [ pxcor >= 4 and pycor = -3 ]
+ set pedestrian-lane4 patches with [ pxcor = 3 and pycor >= 4 ]
+ set pedestrian-lane5 patches with [ pxcor = -3 and pycor >= 4 ]
+ set pedestrian-lane6 patches with [ pxcor = 3 and pycor <= -4 ]
+ set pedestrian-lane7 patches with [ pxcor = -3 and pycor <= -4 ]
+
+ ask pedestrian-lane0 [ set pedestrian-lane0? true ]
+ ask pedestrian-lane1 [ set pedestrian-lane1? true ]
+ ask pedestrian-lane2 [ set pedestrian-lane2? true ]
+ ask pedestrian-lane3 [ set pedestrian-lane3? true ]
+ ask pedestrian-lane4 [ set pedestrian-lane4? true ]
+ ask pedestrian-lane5 [ set pedestrian-lane5? true ]
+ ask pedestrian-lane6 [ set pedestrian-lane6? true ]
+ ask pedestrian-lane7 [ set pedestrian-lane7? true ]
+
+
+end
+
+
+
 
 ;;-----------------------------------To initialize cars and set their parameters-------------------------------------------------------------------------------------------;;
 
