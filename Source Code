@@ -823,6 +823,7 @@ if ( no_of_cars < number_of_cars )
 
 to car-parameters
 set rash-car? false
+set dying? false
 set size 1
      set color blue
      set speed 0.2 + random-float 1.1
@@ -963,11 +964,20 @@ end
 
 to separate-cars
 
-      if any? other turtles-here
-       [
-         fd 1
-         separate-cars
-       ]
+ if any? other cars-here
+ [
+   ifelse ( [pcolor] of patch-ahead 1 != red )
+    [
+     fd 1
+     separate-cars
+    ]
+    [
+      set dying? true
+      write-to-file-when-dying
+      set no-of-cars-met-with-accident no-of-cars-met-with-accident + 1
+       die
+     ]
+  ]
 end
 
 ;;-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------;;
