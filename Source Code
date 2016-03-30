@@ -1,73 +1,104 @@
 ;source code
 
-extensions [sound]
+extensions [ sound ] ;; to produce various sounds during simulation especially ambulance
+
+breed[pedestrians pedestrian]
 breed[cars car]
-breed[water]
 breed[ambulances ambulance]
+breed[water]
+
 
 globals
 [
-snow-counter
-ecounter
-emergency-dead
-emergency-lane
-ecounter
-  emergency-north-east
+  no-of-cars-met-with-accident ;;to determine how many cars met with an accident
+  emergency-dead                ;; to determine whether emergency vehicle moved out of scope or not
+  emergency-lane                ;; used as a temporary variable to store the lane of ambulance
+  ecounter                      ;; used in determining when to make ambulance move out of space
+  emergency-north-east          ;; used to store the
+  emergency-north-west          ;; state of traffic lights
+  emergency-south-east          ;; when emergency vehicle
+  emergency-south-west          ;; created
 
-  emergency-north-west
+  pedestrian-lane0              ;;
+  pedestrian-lane1              ;;
+  pedestrian-lane2              ;;  To group Which patches
+  pedestrian-lane3              ;;  corresponds to which
+  pedestrian-lane4              ;;  pedestrian lane
+  pedestrian-lane5              ;;
+  pedestrian-lane6              ;;
+  pedestrian-lane7              ;;
 
-  emergency-south-east
+  glane0                        ;;
+  glane1                        ;;
+  glane2                        ;;  To group which patches
+  glane3                        ;;  corresponds to which
+  glane4                        ;;  road lanes
+  glane5                        ;;
+  glane6                        ;;
+  glane7                        ;;
 
-  emergency-south-west
+  intersections                 ;;;;co-ordinates where all the lanes meet
+  North-west                    ;;;; patch at (-2,2)
+  North-east                    ;;;; patch at (2,2)
+  South-west                    ;;;; patch at (-2,-2)
+  South-east                    ;;;; patch at (2,-2)
 
-  emergency-counter
-  
-  tempturtle
-  templane
-  new-counter
-  glane0
-  glane1
-  glane2
-  glane3
-  glane4
-  glane5
-  glane6
-  glane7
-  intersections    ;;;;co-ordinates where all the lanes meet
-  North-west       ;;;; patch at (-2,2)
-  North-east       ;;;; patch at (2,2)
-  South-west       ;;;; patch at (-2,-2)
-  South-east       ;;;; patch at (2,-2)
   counter
+  snow-counter
+  tempcounter
+  tempcounter1
+  Is-ambulance-already-created?
+
 ]
+
+
+
 
 patches-own
 [
-  plane0?
-  plane1?
-  plane2?
-  plane3?
-  plane4?
-  plane5?
-  plane6?
-  plane7?
+  pedestrian-lane0?             ;;
+  pedestrian-lane1?             ;;
+  pedestrian-lane2?             ;; To determine which
+  pedestrian-lane3?             ;; patch belongs to
+  pedestrian-lane4?             ;; which pedestrian lane
+  pedestrian-lane5?             ;;
+  pedestrian-lane6?             ;;
+  pedestrian-lane7?             ;;
+
+  plane0?                       ;;
+  plane1?                       ;;
+  plane2?                       ;; To determine which
+  plane3?                       ;; patch belongs to which
+  plane4?                       ;; road lanes
+  plane5?                       ;;
+  plane6?                       ;;
+  plane7?                       ;;
+
   intersection?
+
 ]
 
 
-pedestrians-own
-[ 
- direction                       ;; direction in which pedestrians should move along the lanes
- p-tempspeed                     ;; to temporarily store the speed of the pedestrian
- p-speed                         ;; speed of the pedestrians
- p-minspeed                      ;; minimum speed a pedestrian should move
- p-maxspeed                      ;; maximum speed a pedestrian should move
- p-acceleration                  ;; acceleration of the pedestrian
- p-deceleration                  ;; deceleration of the pedestrian
- pedestrian-lane                 ;; lane on which a pedestrian is moving
- change-pedestrian-lane          ;; lane onto which a pedestrian should change while taking a turn
-]
 
+
+cars-own
+[
+  wait-time                    ;; For how much time a car is waiting at a red signal
+  actual-speed                 ;; speed of the turtle corresponding to real world
+  actual-acceleration          ;; acceleration of the car in the real world
+  actual-deceleration          ;; deceleration of the car in the real world
+  speed                        ;; speed of each car
+  max-speed                    ;; maximum speed of the car
+  min-speed                    ;; minimum speed of the car
+  lane                         ;; randomly deciding on to which lane car has to be placed
+  actual-lane                  ;; depending upon the lane assigned, randomly assigning x-cor or y-cor
+  change-lane                  ;; new lane into which each car has to be changed
+  front-car                    ;; if there is any car in the front
+  acceleration                 ;; tells how much a car should accelerate
+  deceleration                 ;; tells how much a car should decelerate
+  rash-car?                    ;; To determine whether a driver is reckless or not
+  dying?                       ;; To know whether a car is met with an accident or not
+]
 
 
 ambulances-own
@@ -87,27 +118,25 @@ ambulances-own
 ]
 
 
-cars-own
+
+
+pedestrians-own
 [
-
-emergency-speed
-
-  speed         ;;;; speed of each car
-  max-speed     ;;;; maximum speed of the car
-  min-speed     ;;;; minimum speed of the car
-  lane          ;;;; randomly deciding on to which lane car has to be placed
-  actual-lane   ;;;; depending upon the lane assigned, randomly assigning x-cor or y-cor
-  change-lane   ;;;; new lane into which each car has to be changed
-  front-car     ;;;; if there is any car in the front
-  acceleration  ;;;; tells how much a car should accelerate
-  deceleration  ;;;; tells how much a car should decelerate
-  slane
-  rash-car?
+ direction                       ;; direction in which pedestrians should move along the lanes
+ p-tempspeed                     ;; to temporarily store the speed of the pedestrian
+ p-speed                         ;; speed of the pedestrians
+ p-minspeed                      ;; minimum speed a pedestrian should move
+ p-maxspeed                      ;; maximum speed a pedestrian should move
+ p-acceleration                  ;; acceleration of the pedestrian
+ p-deceleration                  ;; deceleration of the pedestrian
+ pedestrian-lane                 ;; lane on which a pedestrian is moving
+ change-pedestrian-lane          ;; lane onto which a pedestrian should change while taking a turn
 ]
+
 
 water-own
 [
- snow-speed
+  snow-speed                     ;; speed of the snow turtles
 ]
 
 to create-snow
@@ -189,9 +218,23 @@ end
 to setup
 
   clear-all
+  reset-ticks
+  create-text-file
+  set snow-counter 0
+  set Is-ambulance-already-created? false
+  set no-of-cars-met-with-accident 0
    ask patches
   [
     set intersection? false
+    set pedestrian-lane0? false          ;; At the start of the simulation and before
+    set pedestrian-lane1? false          ;; creating pedestrian lanes, no patch will
+    set pedestrian-lane2? false          ;; come under pedestrian-lanes group. Therefore
+    set pedestrian-lane3? false          ;; making this field false will ensure that no
+    set pedestrian-lane4? false          ;; pedestrian patch is there before creation of
+    set pedestrian-lane5? false          ;; pedestrian lanes.
+    set pedestrian-lane6? false          ;;
+    set pedestrian-lane7? false          ;;
+    
     set plane0? false
     set plane1? false
     set plane2? false
@@ -201,18 +244,18 @@ to setup
     set plane6? false
     set plane7? false
   ]
-  set new-counter 0
-  ;set-default-shape  turtles "car"
+  set tempcounter 0
+  set tempcounter1 0
   draw-margins
   set-intersections
- ; show-count-of-patches
+  setup-pedestrian-lanes
   setup-cars
+  setup-pedestrians
   rash-driving-car
   set North-west "green"
   set counter 0
   change-green-light-NW
-  reset-ticks
-  ;show count  patches with glane0
+  
 end
 
 to set-intersections
