@@ -315,56 +315,47 @@ to draw-margins
       ask patches with [ (pxcor >= x-cor - 2)  and (pxcor <= x-cor + 2) ]
       [set pcolor white ]
 
-    ;;;;To get the green grass effect alongside the roads
+    ;;;;------------------To get the green grass effect alongside the roads
       ask patches with [ (pxcor < x-cor - 2 ) or ( pxcor > x-cor + 2 ) ]
       [set pcolor scale-color green ((random 1000) + 8000) 10 15000 ]
 
 
-   ;;;;To get White margins along the Y-axis
+   ;;;;------------------To get White margins along the Y-axis
       ask patches with [ (pycor >= y-cor - 2) and (pycor <= y-cor + 2) ]
       [set pcolor white ]
 
-
-     ;;;;To get the effect of two lanes on a single road
-      ask patches with [ (pxcor mod 2 = 0) and (pycor = 0) and (pxcor != 2) and (pxcor != -2) ]
-       [ set pcolor black ]
-      ask patches with [ (pycor mod 2 = 0) and (pxcor = 0) ]
-        [set pcolor black ]
-
-       ;;;;;;To delete the red patches and make them white at the intersection of the two roads
-        ask patches with [ (pxcor >= -2 ) and (pxcor <= 2 ) and ( pycor = 0) or
-                              (pycor >= -2 ) and (pycor <= 2) and (pxcor = 0) ]
-         [set pcolor white ]
     ]
 
 
    ;;---------to get white margins and red margins and if max-pxcor and max-pycor are odd numbers--------------------------------------------;;
+  
    if ( max-pxcor mod 2 = 1 ) and ( max-pycor mod 2 = 1 )
    [
        ask patches with [ (pxcor >= x-cor + -3)  and (pxcor <= x-cor + 1) ]
        [set pcolor white ]
 
-    ;;;;To get the green grass effect alongside the roads
+    ;;;;---------------------To get the green grass effect alongside the roads
        ask patches with [ (pxcor < x-cor + -3 ) or ( pxcor >= x-cor + 2 ) ]
        [set pcolor scale-color green ((random 1000) + 8000) 10 15000 ]
 
 
-   ;;;;To get White margins along the Y-axis
+   ;;;;----------------To get White margins along the Y-axis
        ask patches with [ (pycor >= y-cor + -3) and (pycor <= y-cor + 1) ]
        [set pcolor white ]
 
-
-     ;;;;To get the effect of two lanes on a single road
-       ask patches with [ (pxcor mod 2 = 0) and (pycor = 0) and (pxcor != 2) and ( pxcor != -2)]
-       [ set pcolor black ]
-       ask patches with [ (pycor mod 2 = 0) and (pxcor = 0) ]
-       [set pcolor black ]
-
-       ;;;;;;To delete the red patches and make them white at the intersection of the two roads
-        ask patches with [ (pxcor >= -2 ) and (pxcor <= 2 ) and ( pycor = 0) or
-                             (pycor >= -2 ) and (pycor <= 2) and (pxcor = 0) ]
-         [set pcolor white ]
     ]
+    
+    
+     ;;;;---------------To get the effect of two lanes on a single road
+      ask patches with [ (pxcor mod 2 = 0) and (pycor = 0) and (pxcor != 2) and (pxcor != -2) ]
+       [ set pcolor black ]
+      ask patches with [ (pycor mod 2 = 0) and (pxcor = 0) ]
+        [set pcolor black ]
+
+       ;;;;;;------------To delete the red patches and make them white at the intersection of the two roads
+        ask patches with [ (pxcor >= -2 ) and (pxcor <= 2 ) and ( pycor = 0) or
+                              (pycor >= -2 ) and (pycor <= 2) and (pxcor = 0) ]
+         [set pcolor white ]
 
 ;;------------------------------------------------------------------------------------------------------------------------------------------;;
  ;;------------------------------------To assign patches to their respective lanes----------------------------------------------------------------;;
