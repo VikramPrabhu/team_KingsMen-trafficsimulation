@@ -70,6 +70,22 @@ pedestrians-own
 
 
 
+ambulances-own
+[
+  ambulance-actual-speed         ;; speed of the ambulance corresponding to real world
+  ambulance-actual-acceleration  ;; acceleration of the ambulance corresponding to real world
+  ambulance-actual-deceleration  ;; deceleration of the ambulance correspondhin to real world
+  front-vehicle                  ;; determines which vehicle is infront of the ambulance
+  speed                          ;; speed of the ambulance
+  max-speed                      ;; maximum speed an ambulance can reach
+  min-speed                      ;; minimum speed an ambulance should maintain
+  decision-speed                 ;; used to move the ambulances from halt state to movement state
+  lane                           ;; lane on which ambulance should be moved
+  change-lane                    ;; determines the lane into which ambulance should take a turn
+  acceleration                   ;; accleration of the ambulance
+  deceleration                   ;; deceleration of the ambulance
+]
+
 
 cars-own
 [
