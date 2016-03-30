@@ -2399,3 +2399,78 @@ to rash-driver-behaviour
 ]
 
 end
+
+
+to cars-new-behaviour
+
+  ask cars
+
+  [
+
+     if ( front-car != nobody and front-car != 0)
+
+    [
+
+      if ( change-lane = 1 )
+
+      [
+
+       if ( lane = 0 or lane = 2)
+
+       [
+
+         set xcor xcor + 1
+
+         set ycor  1
+
+       ]
+
+
+
+
+      if ( lane = 1 or lane = 3)
+
+      [
+
+       set xcor xcor - 1
+
+       set ycor  -1
+
+      ]
+
+
+
+
+      if ( lane = 4 or lane = 6)
+
+      [
+
+       set xcor 1
+
+       set ycor ycor - 1
+
+      ]
+
+
+
+
+      if ( lane = 5 or lane = 7)
+
+      [
+
+       set xcor -1
+
+       set ycor ycor + 1
+
+     ]
+
+    ]
+
+   ]
+
+  ]
+
+
+
+
+end
