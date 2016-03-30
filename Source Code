@@ -567,7 +567,7 @@ end
 
 
 to forward-pedestrians
-  check-any-pedestrians-waiting-to-cross-roads
+ 
   if ( p-speed < p-minspeed ) [ set p-speed p-minspeed ]
   if ( p-speed > p-maxspeed ) [ set p-speed p-maxspeed ]
   fd p-speed
