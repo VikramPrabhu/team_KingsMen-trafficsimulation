@@ -1108,7 +1108,7 @@ to move
     if ( North-west = "green" )
     [
 
-      ask turtles
+      ask cars
       [
         if [intersection?] of patch-here or [plane5?] of patch-here
         [
@@ -1118,42 +1118,34 @@ to move
             set lane  5
             set speed 1.2
             forward-cars-as-per-speed
-            ;set speed tempspeed
           ]
         ]
 
       ]
     ]
 
-if ( North-west = "green" )
-
-[ ask turtles
-
-[
-
-if ( lane = 0 or lane = 2 or lane = 5 or lane = 6 or lane = 1)
-
-[
-
-move-cars
-
-]
-
-        if ( lane = 4 or lane = 7 or lane = 3 )
-        [
-         
-          separate-cars2
-        ]
-
-]
-
+if ( North-west = "green"  )
+[ 
+ ask cars
+ [
+  if ( lane = 0 or lane = 2 or lane = 5 or lane = 6 or lane = 1)
+  [
+  set wait-time 0
+   move-cars
+  ]
+ if ( lane = 4 or lane = 7 or lane = 3 )
+  [
+   set wait-time wait-time + 1
+   separate-cars2
+  ]
+ ]
 ]
 
 ;;---------------------------------------------------------------------;;
 
     if (North-east = "green" )
     [
-       ask turtles
+       ask cars
       [
         if [intersection?] of patch-here or [plane2?] of patch-here
         [
@@ -1163,44 +1155,34 @@ move-cars
             set lane  2
             set speed 1.2
            forward-cars-as-per-speed
-           ;set speed tempspeed
           ]
         ]
       ]
     ]
 
 
-if ( North-east = "green" )
-
+if ( North-east = "green" and North-east != orange )
 [
-
-ask turtles
-
-[
-
-if ( lane = 4 or lane = 6 or lane = 2 or lane = 5 or lane = 1)
-
-[
-
-move-cars
-
-]
-
-       if ( lane = 0 or lane = 7 or lane = 3 )
-       [
-         separate-cars2
-       ]
-
-
-]
-
+ ask cars
+ [
+  if ( lane = 4 or lane = 6 or lane = 2 or lane = 5 or lane = 1)
+  [
+   set wait-time 0
+   move-cars
+  ]
+  if ( lane = 0 or lane = 7 or lane = 3 )
+  [
+    set wait-time wait-time + 1
+    separate-cars2
+  ]
+ ]
 ]
 
 ;;-------------------------------------------------------------------------;;
 
     if ( South-east = "green")
     [
-       ask turtles
+       ask cars
       [
         if [intersection?] of patch-here or [plane6?] of patch-here
         [
@@ -1210,35 +1192,27 @@ move-cars
             set lane  6
             set speed max-speed
             forward-cars-as-per-speed
-            ;set speed tempspeed
+           
           ]
         ]
       ]
     ]
 
-if ( South-east = "green" )
-
+if ( South-east = "green" and South-east != orange)
 [
-
-ask turtles
-
-[
-
-if ( lane = 3 or lane = 1 or lane = 2 or lane = 5 or lane = 6)
-
-[
-
-move-cars
-
-]
-       if ( lane = 0 or lane = 4 or lane = 7 )
-       [
-         separate-cars2
-       ]
-
-
-]
-
+ ask cars
+ [
+  if ( lane = 3 or lane = 1 or lane = 2 or lane = 5 or lane = 6)
+  [
+   set wait-time 0
+   move-cars
+  ]
+  if ( lane = 0 or lane = 4 or lane = 7 )
+  [
+  set wait-time wait-time + 1
+   separate-cars2
+  ]
+ ]
 ]
 
 ;;--------------------------------------------------------------------------;;
@@ -1246,7 +1220,7 @@ move-cars
      if ( South-west = "green")
      [
 
-      ask turtles
+      ask cars
       [
         if [intersection?] of patch-here or [plane1?] of patch-here
         [
@@ -1256,36 +1230,26 @@ move-cars
             set lane  1
             set speed max-speed
             forward-cars-as-per-speed
-            ;set speed tempspeed
           ]
         ]
       ]
      ]
 
 if ( South-west = "green" )
-
 [
-
-ask turtles
-
-[
-
-if ( lane = 7 or lane = 5 or lane = 2 or lane = 6 or lane = 1)
-
-[
-
-move-cars
-
-]
-
-       if ( lane = 0 or lane = 3 or lane = 4 )
-       [
-         separate-cars2
-       ]
-
-
-]
-
+ ask cars
+ [
+  if ( lane = 7 or lane = 5 or lane = 2 or lane = 6 or lane = 1)
+  [
+  set wait-time 0
+   move-cars
+  ]
+  if ( lane = 0 or lane = 3 or lane = 4 )
+  [
+   set wait-time wait-time + 1 
+   separate-cars2
+  ]
+ ]
 ]
 
 
@@ -1362,7 +1326,7 @@ to move-cars
 
 to forward-cars-as-per-speed
 
-           set front-car one-of turtles-on patch-ahead 1
+           set front-car one-of cars-on patch-ahead 1
            ifelse ( front-car = nobody )
            [ accelerate-the-car ]
            [ decelerate-the-car ]
@@ -1373,7 +1337,7 @@ to forward-cars-as-per-speed
 
          fd speed
          changing-lanes
-         ;separate-cars
+         
 end
 
 ;;-----------------------------------------------------------------------------------------------------;;
