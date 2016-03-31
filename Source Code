@@ -1503,37 +1503,76 @@ to assign-correct-coordinates
 
   if ( lane = 1)
   [
-    if ( ycor < -2 or (ycor < 0 and ycor > -2 ) )
+    if ( change-lane != 1 )
     [
-      set ycor -2
+      if ( ycor < -2 or (ycor < 0 and ycor > -2 ) )
+      [
+        set ycor -2
+      ]
+    ]
+    if ( change-lane = 1)
+    [
+      if ( ycor != -1 )
+        [
+         set ycor -1
+        ]
     ]
   ]
-
    if (lane = 2)
    [
-          if ( ycor > 2 or ( ycor > 0 and ycor < 2 ))
-          [
+     if ( change-lane != 1)
+     [
+         if ( ycor > 2 or ( ycor > 0 and ycor < 2 ))
+         [
             set ycor 2
           ]
+     ]
+     if ( change-lane = 1 )
+     [
+       if ( ycor != 1)
+       [
+         set ycor 1
+       ]
+     ]
    ]
-
+   
   if (lane = 6)
   [
+    if ( change-lane != 1)
+    [
         if ( xcor > 2 or (xcor > 0 and xcor < 2))
         [
           set xcor 2
         ]
+    ]
+    if ( change-lane = 1 )
+    [
+     if ( xcor != 1)
+     [
+       set xcor 1
+     ]
+    ]
   ]
 
   if (lane = 5)
   [
+    if ( change-lane != 1)
+    [
         if ( xcor < -2  or ( xcor < 0 and xcor > -2))
         [
           set xcor -2
         ]
+    ]
+    if ( change-lane = 1 )
+    [
+      if ( xcor != -1 )
+      [
+        set xcor -1
+      ]
+    ]
   ]
-end
 
+end
 
 to separate-cars2
 
