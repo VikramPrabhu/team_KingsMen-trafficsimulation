@@ -1620,8 +1620,8 @@ to separate-cars2
 end
 
 to stop-at-the-red-light
-  let t-ahead one-of turtles-on patch-ahead 1
-  if ( t-ahead = nobody and [pcolor] of patch-ahead 1 != red )
+  let t-ahead one-of cars-on patch-ahead 1
+  if ( t-ahead = nobody and [pcolor] of patch-ahead 1 != red and [pcolor] of patch-ahead 1 != orange )
   [
     fd 1
     slow-cars-at-the-red-light
