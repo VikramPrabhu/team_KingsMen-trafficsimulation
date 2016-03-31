@@ -1633,6 +1633,76 @@ to stop-at-the-red-light
 
 end
 
+
+to temp-procedure
+
+  let t-ahead one-of cars-on patch-ahead 1
+  if ( t-ahead = nobody )
+  [
+    if (lane = 0 )
+    [
+      if ( ([pcolor] of patches with [pxcor = -3 and pycor = 2] != [15] and
+        [pcolor] of patches with [pxcor = -3 and pycor = 2] != [25])  or
+        [pxcor] of patch-ahead 1 != -3  )
+      [
+       fd 1
+       slow-cars-at-the-red-light1
+       if ( (tempcounter1 mod 5) = 0 )
+       [
+         temp-procedure
+       ]
+      ]
+    ]
+
+     if (lane = 4 )
+    [
+      if ( ([pcolor] of patches with [ pxcor = 2 and pycor = 3] != [15] and
+        [pcolor] of patches with [ pxcor = 2 and pycor = 3] != [25] )or
+        [pycor] of patch-ahead 1 != 3 )
+      [
+       fd 1
+       slow-cars-at-the-red-light1
+       if ( (tempcounter1 mod 5) = 0 )
+       [
+         temp-procedure
+       ]
+      ]
+    ]
+
+     if (lane = 3 )
+    [
+      if ( ([pcolor] of patches with [pxcor = 3 and pycor = -2] != [15] and
+        [pcolor] of patches with [pxcor = 3 and pycor = -2] != [25]) or
+        [pxcor] of patch-ahead 1 != 3 )
+      [
+       fd 1
+       slow-cars-at-the-red-light1
+       if ( (tempcounter1 mod 5) = 0 )
+       [
+         temp-procedure
+       ]
+      ]
+    ]
+
+     if (lane = 7 )
+    [
+      if ( ([pcolor] of patches with [pxcor = -2 and pycor = -3] != [15] and
+        [pcolor] of patches with [pxcor = -2 and pycor = -3] != [25]) or
+        [pycor] of patch-ahead 1 != -3 )
+      [
+       fd 1
+       slow-cars-at-the-red-light1
+       if ( (tempcounter1 mod 5) = 0 )
+       [
+         temp-procedure
+       ]
+      ]
+    ]
+  ]
+end
+
+
+
 to slow-cars-at-the-red-light
   set tempcounter tempcounter + 1
 end
