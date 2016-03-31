@@ -795,7 +795,7 @@ end
 to count-cars
 let no_of_cars count cars
 
-if ( no_of_cars < number_of_cars )
+if ( no_of_cars < number-of-cars )
 [
   create-cars ( number-of-cars - no_of_cars )
   [
@@ -841,7 +841,6 @@ set size 1
        [
          set xcor random max-pxcor
          set ycor -2
-         set slane 3
         ]
 
        if ( lane = 4 )
@@ -1340,6 +1339,38 @@ to forward-cars-as-per-speed
          
 end
 
+to change-globals-red
+
+            if ( North-west = "green" )
+             [
+               set North-west "red"
+               set North-east "green"
+               change-green-light-NE
+               stop
+             ]
+              if ( North-east = "green" )
+             [
+               set South-east "green"
+               set North-east "red"
+               change-green-light-SE
+               stop
+             ]
+
+            if ( South-east = "green" )
+             [
+               set South-west "green"
+               set South-east "red"
+               change-green-light-SW
+               stop
+             ]
+              if ( South-west = "green" )
+             [
+               set North-west "green"
+               set South-west "red"
+               change-green-light-NW
+               stop
+             ]
+end
 ;;-----------------------------------------------------------------------------------------------------;;
 
 to change-green-light-NW
