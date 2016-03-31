@@ -1707,10 +1707,14 @@ to slow-cars-at-the-red-light
   set tempcounter tempcounter + 1
 end
 
+to slow-cars-at-the-red-light1
+   set tempcounter1 tempcounter1 + 1
+end
+
 to periodic-change-of-lanes-in-vehicles
    if ( ( ticks mod 300) = 0 )
    [
-     ask turtles
+     ask cars
      [
        set change-lane random 3
      ]
