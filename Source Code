@@ -1783,7 +1783,13 @@ to Emergency-Vehicles
 
 end
 
+
 to go-emergency
+
+ if ( ticks = number-of-ticks)
+ [
+  stop
+]
 
 ask ambulances
 [
@@ -1791,286 +1797,138 @@ ask ambulances
  ]
   Emergency-vehicles-changing-lanes
 forward-the-emergency-vehicle
-
 end
 
 to Emergency-vehicles-changing-lanes
 
     ask ambulances
-
     [
-
-  if ( lane = 0 )
-
-  [
-
+    if ( lane = 0 )
+    [
    if ( change-lane = 0 or change-lane = 3 )
-
    [
-
      if ( pxcor = -3 and pycor = 1 )
-
      [
-
+     set lane 2
        set ecounter 1
-
      ]
-
    ]
-
     if (change-lane = 1 )
-
     [
-
         if ( pxcor = 1 and pycor = 1 )
-
         [
-
-
-
 
           set heading 180
-
           set lane 6
-
           set ecounter 1
-
         ]
-
     ]
+    if ( change-lane = 2 )
+    [
+      if ( pxcor = -1 and pycor = 1 )
+      [
+        set heading 0
+        set lane 5
+        set ecounter 1
+      ]
+    ]
+   ]
+  ;;----------------------------------------------------------------------------;;
+  if ( lane = 3 )
+  [
+     if ( change-lane = 0 or change-lane = 3 )
+   [
+     if ( pxcor = 3 and pycor = -1 )
+     [
+     set lane 1
+      set ecounter 1
+     ]
+   ]
 
     if ( change-lane = 2 )
-
     [
-
-      if ( pxcor = -1 and pycor = 1 )
-
+     if ( pxcor = 1 and pycor = -1 )
       [
-
-        set heading 0
-
-        set lane 5
-
-        set ecounter 1
-
-      ]
-
-    ]
-
-   ]
-
-  ;;----------------------------------------------------------------------------;;
-
-  if ( lane = 3 )
-
-  [
-
-     if ( change-lane = 0 or change-lane = 3 )
-
-   [
-
-     if ( pxcor = 3 and pycor = -1 )
-
-     [
-
-       set ecounter 1
-
-     ]
-
-   ]
-
-
-
-
-    if ( change-lane = 1 )
-
-    [
-
-     if ( pxcor = 2 and pycor = -1 )
-
-      [
-
         set heading 180
-
         set lane 6
-
         set ecounter 1
-
-
-
-
       ]
-
     ]
-
-      if ( change-lane = 2 )
-
+      if ( change-lane = 1 )
       [
-
        if ( pxcor = -2 and pycor = -1 )
-
         [
-
           set heading 0
-
           set lane 5
-
           set ecounter 1
-
-
-
-
         ]
-
       ]
-
     ]
 
   ;;----------------------------------------------------------------------------;;
-
-
-
 
      if ( lane = 4 )
-
   [
-
-
-
-
     if ( change-lane = 0 or change-lane = 3 )
-
    [
-
      if ( pxcor = 1 and pycor = -2 )
-
      [
-
+     set lane 6
        set ecounter 1
-
      ]
-
    ]
 
-
-
-
     if ( change-lane = 1 )
-
     [
-
      if ( pxcor = 1 and pycor = -2 )
-
       [
-
         set heading -90
-
         set lane 1
-
         set ecounter 1
-
-
-
-
       ]
-
     ]
-
       if ( change-lane = 2 )
-
       [
-
         if ( pxcor = 1 and pycor = 1 )
-
         [
-
           set heading 90
-
           set lane 2
-
           set ecounter 1
-
-
-
-
         ]
-
       ]
-
     ]
-
-
-
 
 ;;----------------------------------------------------------------------------;;
-
    if ( lane = 7 )
-
   [
-
-
-
-
    if ( change-lane = 0 or change-lane = 3 )
-
    [
-
      if ( pxcor = -1 and pycor = -3 )
-
      [
-
+     set lane 5
        set ecounter 1
-
      ]
-
    ]
-
-
-
-
-    if ( change-lane = 1 )
-
+    if ( change-lane = 2 )
     [
-
      if ( pxcor = -1 and pycor = -1 )
-
       [
-
         set heading -90
-
         set lane 1
-
         set ecounter 1
-
-        ;assign-correct-coordinates
-
+        
       ]
-
     ]
-
-      if ( change-lane = 2 )
-
+      if ( change-lane = 1 )
       [
-
         if ( pxcor = -1 and pycor = 2 )
-
         [
-
           set heading 90
-
           set lane 2
-
           set ecounter 1
-
-
-
-
         ]
-
       ]
-
     ]
-
     ]
 
 end
