@@ -1576,42 +1576,47 @@ end
 
 to separate-cars2
 
+
   if ( lane = 0)
   [
-    if ( xcor >= min-pxcor and ycor > 0 or ycor <= 2 )
+    if ( xcor >= min-pxcor and ( ycor > 0 and ycor <= 2 ))
     [
-
       separate-cars
-      stop-at-the-red-light
+      ifelse ( change-lane = 1 ) [ temp-procedure ]
+      [stop-at-the-red-light]
     ]
   ]
 
   if ( lane = 4 )
   [
-    if ( ycor <= max-pycor and xcor > 0 and xcor <= 2 )
+    if ( ycor <= max-pycor and (xcor > 0 and xcor <= 2) )
     [
       separate-cars
-      stop-at-the-red-light
+       ifelse ( change-lane = 1 ) [ temp-procedure ]
+      [stop-at-the-red-light]
     ]
   ]
 
   if ( lane = 3 )
   [
-    if ( xcor <= max-pxcor and ycor >= -2 and ycor < 0)
+    if ( xcor <= max-pxcor and (ycor >= -2 and ycor < 0))
     [
       separate-cars
-      stop-at-the-red-light
+       ifelse ( change-lane = 1 ) [ temp-procedure ]
+      [stop-at-the-red-light]
     ]
   ]
 
   if ( lane = 7 )
   [
-    if( xcor < 0 and xcor >= -2 and ycor >= min-pycor)
+    if( (xcor < 0 and xcor >= -2) and ycor >= min-pycor)
     [
       separate-cars
-      stop-at-the-red-light
+       ifelse ( change-lane = 1 ) [ temp-procedure ]
+      [stop-at-the-red-light]
     ]
   ]
+
 end
 
 to stop-at-the-red-light
