@@ -287,6 +287,15 @@ to write-to-file
     file-print ( word " Average wait time of all cars is - " mean [ wait-time] of cars "sec" )
     file-print( word " ***********************")
     file-print (word " Average speed of all the cars is - " mean [ actual-speed] of cars "mph")
+    file-print (word "  ************************" )
+    file-print (word " Density of cars on lane-0 - " count cars with [lane = 0] )
+    file-print (word " Density of cars on lane-1 - " count cars with [lane = 1] )
+    file-print (word " Density of cars on lane-2 - " count cars with [lane = 2] )
+    file-print (word " Density of cars on lane-3 - " count cars with [lane = 3] )
+    file-print (word " Density of cars on lane-4 - " count cars with [lane = 4] )
+    file-print (word " Density of cars on lane-5 - " count cars with [lane = 5] )
+    file-print (word " Density of cars on lane-6 - " count cars with [lane = 6] )
+    file-print (word " Density of cars on lane-7 - " count cars with [lane = 7] )
   ]
 end
 
@@ -816,7 +825,7 @@ end
 
 to setup-cars
 
- ifelse ( number-of-cars <= ( (max-pxcor - 3 ) * 8 ) / 2 )  ;; Checks whether the no of cars creating are less than the size of all the road lanes together.
+ ifelse ( number-of-cars <= floor ( (((max-pxcor - 5 ) * 30)  / 100 ) * 8) )  ;; Checks whether the no of cars creating are less than the size of all the road lanes together.
  [
       create-cars number-of-cars
       [
