@@ -1840,8 +1840,9 @@ to Emergency-vehicles-changing-lanes
    [
      if ( pxcor = -3 and pycor = 1 )
      [
+     set ecounter 1
      set lane 2
-       set ecounter 1
+       
      ]
    ]
     if (change-lane = 1 )
@@ -1871,8 +1872,9 @@ to Emergency-vehicles-changing-lanes
    [
      if ( pxcor = 3 and pycor = -1 )
      [
+     set ecounter 1
      set lane 1
-      set ecounter 1
+      
      ]
    ]
 
@@ -1904,8 +1906,9 @@ to Emergency-vehicles-changing-lanes
    [
      if ( pxcor = 1 and pycor = -2 )
      [
+     set ecounter 1
      set lane 6
-       set ecounter 1
+       
      ]
    ]
 
@@ -1936,8 +1939,9 @@ to Emergency-vehicles-changing-lanes
    [
      if ( pxcor = -1 and pycor = -3 )
      [
+     set ecounter 1
      set lane 5
-       set ecounter 1
+       
      ]
    ]
     if ( change-lane = 2 )
