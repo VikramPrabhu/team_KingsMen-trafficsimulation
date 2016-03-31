@@ -1958,8 +1958,7 @@ to decelerate-the-ambulance
 
 
 
-to forward-the-emergency-vehicle
-
+ to forward-the-emergency-vehicle
 
    ask ambulances
    [
@@ -1968,43 +1967,142 @@ to forward-the-emergency-vehicle
        if ( xcor >= max-pxcor or xcor <= min-pxcor or ycor >= max-pycor or ycor <= min-pycor )
        [
          set emergency-dead 1
+         set Is-ambulance-already-created? false
          die
-
-         
        ]
      ]
-      fd speed
-      test-sound
-   ]
-   if emergency-dead = 1
-   [  
-   resume-all-the-vehicles-after-emergency-vehicle-moved-out
+     if (( xcor < max-pxcor or xcor > min-pxcor or ycor < max-pycor or ycor > min-pycor ))
+       [
+          set front-vehicle one-of cars-on patch-ahead 1
+           ifelse ( front-vehicle = nobody )
+           [ accelerate-the-ambulance ]
+           [ decelerate-the-ambulance ]
+           fd speed
+
+           ambulance-decision-during-red-light
+           test-sound
+       ]
+     ]
+   if ( emergency-dead = 1 )
+   [
+    resume-all-the-vehicles-after-emergency-vehicle-moved-out
    ]
  end
 
 
 to  test-sound
-  sound:play-sound "/Users/jay/Downloads/Ambulance.wav"
+  ;sound:play-sound "/Users/jay/Downloads/Ambulance.wav"
 end
+
+to change-lanes-for-emergency-vehicles
+
+   if ( [intersection?] of patch-here )
+  [
+  if ( lane = 0  )
+  [
+    if ( change-lane = 2 ) [ set lane 5]
+    if ( change-lane = 0 or change-lane = 3 ) [ set lane 2 ]
+    if ( change-lane = 1 ) [ set lane 6 ]
+  ]
+
+  if ( lane = 4  )
+  [
+   if ( change-lane = 0 or change-lane = 3 ) [ set lane 6 ]
+   if ( change-lane = 2 ) [ set lane 2 ]
+   if ( change-lane = 1 ) [ set lane 1 ]
+  ]
+
+  if ( lane = 3 )
+  [
+   if ( change-lane = 0 or change-lane = 3 ) [ set lane 1 ]
+   if ( change-lane = 2 ) [ set lane 6 ]
+   if ( change-lane = 1 ) [ set lane 5 ]
+  ]
+
+  if ( lane = 7 )
+  [
+   if ( change-lane = 0 or change-lane = 3 ) [ set lane 5 ]
+   if ( change-lane = 2 ) [ set lane 1 ]
+   if ( change-lane = 1 ) [ set lane 2 ]
+  ]
+  ]
+
+end
+
+to ambulance-decision-during-red-light
+
+  if ( lane = 0 )
+  [
+     if ( [pcolor] of patches with [ pxcor = -3 and pycor = 2 ] = [15] and ( change-lane != 2 )
+                and [pxcor] of patch-ahead 1 = -3)
+       [
+         set speed 0
+       ]
+       if ( [pcolor] of patches with [ pxcor = -3 and pycor = 2 ] = [55]
+                and ([pxcor] of patch-here = -4 or [pxcor] of patch-here > -3 )and speed = 0)
+       [
+         set  speed decision-speed
+       ]
+   ]
+
+  if ( lane = 4 )
+  [
+    if ( [pcolor] of patches with [ pxcor = 2 and pycor = 3] = [ 15 ] and ( change-lane != 2 )
+         and [pycor] of patch-ahead 1 = 3 )
+      [
+        set speed 0
+      ]
+      if ( [pcolor] of patches with [ pxcor = 2 and pycor = 3] = [ 55 ]
+         and ([pycor] of patch-here = 4 or [pycor] of patch-here < 3 ) and speed = 0 )
+      [
+        set  speed decision-speed
+      ]
+  ]
+  if ( lane = 3 )
+  [
+    if ( [pcolor] of patches with [ pxcor = 3 and pycor = -2 ] = [15] and ( change-lane != 2 )
+         and [pxcor] of patch-ahead 1 = 3)
+      [
+        set speed 0
+      ]
+
+      if ( [pcolor] of patches with [ pxcor = 3 and pycor = -2 ] = [55]
+        and ([pxcor] of patch-here = 4 or [pxcor] of patch-here < 3 )and speed = 0)
+      [
+        set  speed decision-speed
+      ]
+  ]
+
+  if ( lane = 7 )
+  [
+    if ( [pcolor] of patches with [ pxcor = -2 and pycor = -3 ] = [15] and (change-lane != 2 )
+       and [pycor] of patch-ahead 1 = -3)
+    [
+      set speed 0
+    ]
+
+    if ( [pcolor] of patches with [ pxcor = -2 and pycor = -3 ] = [55]
+       and ([pycor] of patch-here = -4 or [pycor] of patch-here > -3 ) and speed = 0)
+    [
+      set  speed decision-speed
+    ]
+
+  ]
+
+end
+
+
 
 to move-on-to-lane-during-emergency-vehicle
 
   ask cars
-
     [
-
       if ( [intersection?] of patch-here )
-
       [
-
         fd 1
-
         move-on-to-lane-during-emergency-vehicle
-
       ]
-
     ]
-
 end
 
 
@@ -2012,372 +2110,179 @@ end
 
 to stop-vehicles-during-emergency
 
-
-
-
     set emergency-north-east North-east
-
     set emergency-north-west North-West
-
     set emergency-south-east South-east
-
     set emergency-south-west South-west
 
-
-
-
   if ( emergency-lane = 0 )
-
   [
-
     ask patches with [ pxcor = 3 and pycor = -2] [ set pcolor red]
-
     ask patches with [ pxcor = 2 and pycor = 3]  [ set pcolor red]
-
     ask patches with [ pxcor = -2 and pycor = -3][ set pcolor red]
-
     set North-east "red"
-
     set South-east "red"
-
     set South-west "red"
-
   ]
-
   if ( emergency-lane = 4 )
-
   [
-
     ask patches with [ pxcor = -3 and pycor = 2] [ set pcolor red]
-
     ask patches with [ pxcor = 3 and pycor = -2] [ set pcolor red]
-
     ask patches with [ pxcor = -2 and pycor = -3][ set pcolor red]
-
     set North-west "red"
-
     set South-east "red"
-
     set South-west "red"
-
   ]
-
   if ( emergency-lane = 3 )
-
   [
-
     ask patches with [ pxcor = -3 and pycor = 2] [ set pcolor red]
-
     ask patches with [ pxcor = 2 and pycor = 3]  [ set pcolor red]
-
     ask patches with [ pxcor = -2 and pycor = -3][ set pcolor red]
-
     set North-east "red"
-
     set North-west "red"
-
     set South-west "red"
-
   ]
-
   if ( emergency-lane = 7 )
-
   [
-
     ask patches with [ pxcor = -3 and pycor = 2] [ set pcolor red]
-
     ask patches with [ pxcor = 3 and pycor = -2] [ set pcolor red]
-
     ask patches with [ pxcor = 2 and pycor = 3]  [ set pcolor red]
-
     set North-east "red"
-
     set North-west "red"
-
     set South-east "red"
-
   ]
-
-
-
 
   move-on-to-lane-during-emergency-vehicle
 
-
-
-
   ask cars with [ lane = 5 or lane = 1 or lane = 6 ]
-
   [ forward-cars-as-per-speed ]
-
 end
 
 
 
 to resume-all-the-vehicles-after-emergency-vehicle-moved-out
 
-
-
   if ( (North-west = "red" or North-west = 0) and
-
        (North-east = "red"  or North-east = 0) and
-
        (South-east = "red"  or South-east = 0) and
-
        (South-west = "red"  or South-west = 0))
-
   [
-
     set North-east emergency-north-east
-
     set North-West emergency-north-west
-
     set South-east emergency-south-east
-
     set South-west emergency-south-west
 
-
-
-
     if ( North-west = "green" )
-
      [
-
-       ask patch -3 2 [ set pcolor green]
-
+      ask patch -3 2 [ set pcolor green]
      ]
-
-
-
-
+     
      if ( North-east = "green" )
-
      [
-
        ask patch 2 3  [ set pcolor green]
-
      ]
-
-
-
 
      if ( South-east = "green")
-
      [
-
         ask patch 3 -2  [ set pcolor green]
-
      ]
-
 
      if ( South-west = "green" )
-
      [
-
       ask patch -2 -3  [ set pcolor green]
-
      ]
-
   ]
-
 end
 
 to rash-driver-behaviour
 
   ask cars with [ rash-car? = true ]
-
   [
-
      if ( front-car != nobody and front-car != 0)
-
     [
-
      if ( lane = 0 or lane = 2)
-
      [
-
       set xcor xcor + 1
-
       set ycor  1
-
     ]
-
-
-
 
     if ( lane = 1 or lane = 3)
-
     [
-
       set xcor xcor - 1
-
       set ycor  -1
-
     ]
-
-
-
 
     if ( lane = 4 or lane = 6)
-
     [
-
       set xcor 1
-
       set ycor ycor - 1
-
     ]
-
-
-
 
     if ( lane = 5 or lane = 7)
-
     [
-
       set xcor -1
-
       set ycor ycor + 1
-
     ]
-
   ]
-
-
-
-
-
-
 
   if ( front-car = nobody )
-
   [
-
   if ( (lane = 0 or lane = 2 ) and ycor = 1)
-
   [
-
     if ( not any? cars-at (xcor + 2) 2 )
-
     [
-
       set xcor xcor + 2
-
       set ycor 2
-
     ]
-
   ]
-
-
 
 
   if ( (lane = 3 or lane = 1 ) and ycor = -1 )
-
   [
-
     if ( not any? cars-at ( xcor - 2) -2 )
-
      [
-
         set xcor xcor - 2
-
         set ycor -2
-
      ]
-
   ]
-
-
-
 
   if ( (lane = 4 or lane = 6 ) and xcor = 1 )
-
   [
-
     if ( not any? cars-at 2 (ycor - 2) )
-
       [
-
         set xcor 2
-
         set ycor ycor - 2
-
       ]
-
     ]
 
-
-
-
   if ( (lane = 5 or lane = 7 ) and xcor = -1 )
-
   [
-
     if ( not any? cars-at -2 (ycor + 2) )
-
       [
-
         set xcor -2
-
         set ycor ycor + 2
-
       ]
-
   ]
-
-
-
-
   ]
-
-
-
-
-
-
 
   if ( lane = 4 and ([pycor] of patch-here <= 3  or [intersection?] of patch-here ) and (North-east = "red" or North-east = 0 ))
-
       [
-
          die
-
       ]
-
-
-
-
       if ( lane = 0 and ([pxcor] of patch-here >= -3 or [intersection?] of patch-here ) and (North-west = "red" or North-west = 0))
-
       [
-
          die
-
       ]
-
-
-
 
       if ( lane = 3 and ([pxcor] of patch-here <= 3 or [intersection?] of patch-here ) and (South-east = "red" or South-east = 0) )
-
       [
-
         die
-
       ]
-
-
-
 
       if ( lane = 7 and ([pycor] of patch-here >= -3 or [intersection?] of patch-here ) and (South-west = "red" or South-west = 0 ) )
-
       [
-
          die
-
       ]
-
 ]
 
 end
@@ -2386,73 +2291,36 @@ end
 to cars-new-behaviour
 
   ask cars
-
   [
-
      if ( front-car != nobody and front-car != 0)
-
     [
-
       if ( change-lane = 1 )
-
       [
-
        if ( lane = 0 or lane = 2)
-
        [
-
          set xcor xcor + 1
-
          set ycor  1
-
        ]
 
-
-
-
       if ( lane = 1 or lane = 3)
-
       [
-
        set xcor xcor - 1
-
        set ycor  -1
-
       ]
-
-
-
-
+      
       if ( lane = 4 or lane = 6)
-
       [
-
        set xcor 1
-
        set ycor ycor - 1
-
       ]
-
-
-
 
       if ( lane = 5 or lane = 7)
-
       [
-
        set xcor -1
-
        set ycor ycor + 1
-
      ]
-
     ]
-
    ]
-
   ]
-
-
-
 
 end
